@@ -11,7 +11,7 @@ import java.io.IOException;
 @RequestMapping("/fakeTerminal")
 public class fake {
     @Autowired
-    private metaAPItest meta;
+    private metaAPI meta;
 
   @GetMapping("/{id}")
   public String RUready(@PathVariable int id){
@@ -19,18 +19,21 @@ public class fake {
         return "hello";
     }
     public void test(){
-      System.out.println();
+        System.out.println();
     }
     @GetMapping("/askconnect")
     public boolean testConnection() throws IOException {
-    return     meta.AccountStatusTest();
+        return     meta.AccountStatusTest();
     }
     @GetMapping("/connect")
     public String deploy() throws IOException {
       meta.deployAccount();
       return "system is deployed";
     }
-
+    @GetMapping("/test")
+    public String testForCandle() throws IOException {
+      return meta.getCurrentCandle();
+    }
 
 
 

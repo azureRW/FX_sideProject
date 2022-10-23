@@ -1,7 +1,5 @@
 package com.fx_sideproject;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import controller.metaAPItest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;

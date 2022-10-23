@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import cloud.metaapi.sdk.meta_api.*;
@@ -20,9 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
-public class metaAPItest {
+public class metaAPI {
     private boolean EnvironmentIsSet = false;
     private final String URL = "https://mt-client-api-v1.new-york.agiliumtrade.ai";
+    @Value("${pathFOrCandle}")
+    private String currentCandle;
     @Value("${accountId}")
     private String accountId;
     @Value("${token}")
@@ -56,6 +57,7 @@ public class metaAPItest {
 
     public void testForMetaApi(){
     }
+    @Deprecated
     public void redeployMtAptAccount() throws IOException {
         if (!EnvironmentIsSet) setEnvironment();
         account.redeploy().join();
@@ -96,12 +98,13 @@ public class metaAPItest {
         System.out.println(price.bid.toString());
     }
 
-    //if account doesnt deploy, the function will deploy it and return null
+    //if account doesn't deploy, the function will deploy it and return null
     //if account is deployed it return null
-    //if it is in 15 minutes CD time, is will return corresponding erro message
+    //if it is in 15 minutes CD time, is will sout corresponding erro message
     public void deployAccount() throws IOException {
         if (!EnvironmentIsSet) setEnvironment();
-        if(!AccountStatusTest()){
+        if(!AccountStatusTest())//if account doesn't be deployed, I will run
+        {
             restTemplate.setErrorHandler(new fuckOfErrorHandler());
             ResponseEntity<String> response= restTemplate.postForEntity(
                     "https://mt-provisioning-api-v1.agiliumtrade.agiliumtrade.ai/users/current/accounts/"+accountId+"/deploy?executeForAllReplicas=true"
@@ -111,7 +114,7 @@ public class metaAPItest {
         }
         else System.out.println("deployAccount does not run cuz account is deployed");
     }
-
+    // the function will return the status of metaApiServer, true means connect ; false means disconnect
     public boolean AccountStatusTest() throws IOException {
         if (!EnvironmentIsSet) setEnvironment();
         ResponseEntity<String> response =restTemplate.exchange(
@@ -122,16 +125,23 @@ public class metaAPItest {
 //             System.out.println(response.getBody());
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         HashMap<String,String> e = objectMapper.readValue(response.getBody(),HashMap.class);
-//            System.out.println(e.get("connectionStatus"));
+        System.out.println("account is "+e.get("connectionStatus"));
         return e.get("connectionStatus").equals("CONNECTED");
     }
-
-
-
-
-
-
-    public metaAPItest() throws ExecutionException, InterruptedException, IOException {
+    public String getCurrentCandle() throws IOException {
+        if (!EnvironmentIsSet) setEnvironment();
+        ResponseEntity<String> response = restTemplate.exchange(
+                currentCandle
+                ,HttpMethod.GET
+                ,new HttpEntity<String>(this.headers)
+                ,String.class
+        );
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+        HashMap<String,String> e =objectMapper.readValue(response.getBody(),HashMap.class);
+        System.out.println(e.entrySet());
+        return e.entrySet().toString();
+    }
+    public metaAPI() throws ExecutionException, InterruptedException, IOException {
 
     }
 }
