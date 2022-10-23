@@ -22,12 +22,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 public class metaAPItest {
     private boolean EnvironmentIsSet = false;
-
     private final String URL = "https://mt-client-api-v1.new-york.agiliumtrade.ai";
     @Value("${accountId}")
     private String accountId;
     @Value("${token}")
     private String token;
+
+
 
     public void setApi(MetaApi api) {
         this.api = api;
