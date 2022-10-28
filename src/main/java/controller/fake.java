@@ -1,10 +1,12 @@
 package controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 
 @RestController
@@ -34,7 +36,10 @@ public class fake {
     public String testForCandle() throws IOException {
       return meta.getCurrentCandle();
     }
-
+    @GetMapping("/time")
+    public String getTime() throws JsonProcessingException, ParseException {
+      return meta.getTime().toString();
+    }
 
 
 }

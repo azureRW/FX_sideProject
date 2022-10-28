@@ -25,12 +25,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>cloud.metaapi.sdk</groupId>
-            <artifactId>metaapi-java-sdk</artifactId>
-            <version>14.0.4</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.experimental</groupId>
             <artifactId>spring-native</artifactId>
             <version>${spring-native.version}</version>

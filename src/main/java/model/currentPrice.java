@@ -1,7 +1,9 @@
 package model;
 
-import java.math.BigDecimal;
+import org.springframework.stereotype.Controller;
 
+import java.math.BigDecimal;
+@Controller
 public class currentPrice {
     public String equity =null;
     public String symbol = null;
