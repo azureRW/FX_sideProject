@@ -95,7 +95,7 @@ public class metaAPI {
         System.out.println("account is "+e.get("connectionStatus"));
         return e.get("connectionStatus").equals("CONNECTED");
     }
-    public String getCurrentCandle() throws IOException {
+    public void getCurrentCandle() throws IOException, ParseException {
         if (!EnvironmentIsSet) setEnvironment();
         ResponseEntity<String> response = restTemplate.exchange(
                 currentCandle
@@ -104,11 +104,18 @@ public class metaAPI {
                 ,String.class
         );
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
-        HashMap<String,String> e =objectMapper.readValue(response.getBody(),HashMap.class);
-        System.out.println(e.entrySet());
-        return e.entrySet().toString();
+        catchJson cj =objectMapper.readValue(response.getBody(),catchJson.class);
+//        System.out.println(cj.date);
+
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd-HH:mm");
+
+        sdfInput.setTimeZone(TimeZone.getTimeZone("GMT"));
+        sdfOutput.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cj.date=sdfOutput.format(sdfInput.parse(cj.date));
+        System.out.println(cj.date);
     }
-    public String getHistoryCandle() throws ParseException, JsonProcessingException {
+    public ArrayList<catchJson> getHistoryCandle() throws ParseException, JsonProcessingException {
         Date date = getTime();
         Calendar cal = new GregorianCalendar();
         cal.setTime(date);
@@ -129,10 +136,9 @@ public class metaAPI {
         url=url+"&start_date="+startDate
                 +"&end_date="+endDate
                 +"&interval="+interval;
-//        System.out.println(startDate+"  "+endDate);
-        String string = restTemplate.getForObject(url,String.class);
-//        System.out.println(strng);
-        return string;
+        catchJsonFather e= objectMapper.readValue(restTemplate.getForObject(url,String.class),catchJsonFather.class);
+        ArrayList<catchJson> e_son = e.quotes;// the list contain all history candles
+        return e_son;
     }
     @Deprecated
     public void catchCandle_test() throws IOException {
@@ -140,18 +146,7 @@ public class metaAPI {
         catchJsonFather e= objectMapper.readValue(new File("C:\\code\\java\\fx\\FX_sideProject\\test.json"),catchJsonFather.class);
         ArrayList<catchJson> e_son = e.quotes;
     }
-    public  void catchCandle() throws IOException, ParseException {
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        catchJsonFather e= objectMapper.readValue(getHistoryCandle(),catchJsonFather.class);
-        ArrayList<catchJson> e_son = e.quotes;
-//        for(int i = 0 ;i<e_son.size();i++){
-//            System.out.println(e_son.get(i).date);
-//            System.out.println(e_son.get(i).open);
-//            System.out.println(e_son.get(i).close);
-//            System.out.println(e_son.get(i).low);
-//            System.out.println(e_son.get(i).high);
-//        }
-    }
+
     public Date getTime() throws JsonProcessingException, ParseException {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
         if (!EnvironmentIsSet) setEnvironment();

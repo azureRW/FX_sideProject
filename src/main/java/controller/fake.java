@@ -33,8 +33,9 @@ public class fake {
       return "system is deployed";
     }
     @GetMapping("/test")
-    public String testForCandle() throws IOException {
-      return meta.getCurrentCandle();
+    public String testForCandle() throws IOException, ParseException {
+      meta.getCurrentCandle();
+      return "test";
     }
     @GetMapping("/time")
     public String getTime() throws JsonProcessingException, ParseException {
