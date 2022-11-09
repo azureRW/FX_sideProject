@@ -17,7 +17,10 @@ import java.text.ParseException;
 //                        ,exclude ={DataSourceAutoConfiguration.class }
                         )
 
-@ContextConfiguration(classes = config.springDataConfig.class)
+@EnableJpaRepositories(basePackages = {"model","controller","com.fx_sideproject"})
+@EnableTransactionManagement
+@EntityScan(basePackages = "model")
+
 public class FxSideProjectApplication {
 
 
