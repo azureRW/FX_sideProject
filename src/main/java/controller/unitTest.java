@@ -19,6 +19,13 @@ public class unitTest {
 //            for(tradeUser user : users){
 //                System.out.println(user.getUserAccount());
 //            }
+    //find user2
+//    public void test(){
+//        Optional<tradeUser> user = inf.findById(2L);
+////        System.out.println(user.get().getUserAccount());
+//        if(user.isPresent()) System.out.println(user.get().getUserAccount());
+//        else System.out.println("cant find any user whose if = 2");
+    }
     //Creat user
 //    public void test(){
 //        tradeUser u1 = new tradeUser();
