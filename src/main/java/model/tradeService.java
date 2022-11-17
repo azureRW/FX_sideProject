@@ -1,6 +1,6 @@
-package controller;
+package model;
 
-import model.tradeUser;
+import mappingObj.tradeUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 

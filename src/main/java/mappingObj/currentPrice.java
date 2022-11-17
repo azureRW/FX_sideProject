@@ -1,4 +1,4 @@
-package model;
+package mappingObj;
 
 import org.springframework.stereotype.Controller;
 
@@ -8,9 +8,9 @@ public class currentPrice {
     public String equity =null;
     public String symbol = null;
 
-    public BigDecimal bid = null;
+    public Float bid = null;
 
-    public BigDecimal ask = null;
+    public Float ask = null;
 
     public BigDecimal profitTickValue = null;
 
@@ -25,7 +25,7 @@ public class currentPrice {
     public currentPrice() {
     }
 
-    public currentPrice(String equity, String symbol, BigDecimal bid, BigDecimal ask, BigDecimal profitTickValue, BigDecimal lossTickValue, BigDecimal accountCurrencyExchangeRate, String time, String brokerTime) {
+    public currentPrice(String equity, String symbol, Float bid, Float ask, BigDecimal profitTickValue, BigDecimal lossTickValue, BigDecimal accountCurrencyExchangeRate, String time, String brokerTime) {
         this.equity = equity;
         this.symbol = symbol;
         this.bid = bid;

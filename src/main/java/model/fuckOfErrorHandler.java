@@ -1,4 +1,4 @@
-package controller;
+package model;
 
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Controller;

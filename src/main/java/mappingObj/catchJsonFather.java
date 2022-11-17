@@ -1,7 +1,10 @@
-package model;
+package mappingObj;
 
+
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
+@Controller
 public class catchJsonFather {
   public String base_currency;
   public String end_date;

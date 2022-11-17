@@ -1,4 +1,4 @@
-package model;
+package mappingObj;
 
 
 import com.fasterxml.jackson.annotation.JsonAlias;

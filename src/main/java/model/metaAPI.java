@@ -1,4 +1,4 @@
-package controller;
+package model;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +9,10 @@ import java.util.concurrent.ExecutionException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import model.catchJson;
-import model.catchJsonFather;
-import model.currentPrice;
-import model.serverTime;
+import mappingObj.catchJson;
+import mappingObj.catchJsonFather;
+import mappingObj.currentPrice;
+import mappingObj.serverTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,10 +32,7 @@ public class metaAPI {
     private String accountId;
     @Value("${token}")
     private String token;
-
-
-
-
+    public Boolean isdeploy= false;
     private String path;
     private RestTemplate restTemplate = new RestTemplate();
     private HttpHeaders headers = new HttpHeaders();
@@ -55,15 +52,20 @@ public class metaAPI {
                 , HttpMethod.GET
                 ,new HttpEntity<String>(this.headers)
                 ,String.class);
-
+        System.out.println(res.getBody());
         return res;
     }
-    public void getCurrentPrice() throws InterruptedException, IOException {
+       public HashMap<String, Float> getCurrentPrice() throws InterruptedException, IOException {
         if (!EnvironmentIsSet) setEnvironment();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         currentPrice price = objectMapper.readValue(getPriceJSON().getBody(),currentPrice.class);
-        System.out.println(price.bid.toString());
+//        System.out.println(price.bid.toString());
+        HashMap<String,Float> map = new HashMap<>();
+        map.put("bid",price.bid);
+        map.put("ask",price.ask);
+        return map;
     }
+
 
     //if account doesn't deploy, the function will deploy it and return null
     //if account is deployed it return null
@@ -93,7 +95,8 @@ public class metaAPI {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         HashMap<String,String> e = objectMapper.readValue(response.getBody(),HashMap.class);
         System.out.println("account is "+e.get("connectionStatus"));
-        return e.get("connectionStatus").equals("CONNECTED");
+        this.isdeploy = e.get("connectionStatus").equals("CONNECTED");
+        return this.isdeploy;
     }
     public void getCurrentCandle() throws IOException, ParseException {
         if (!EnvironmentIsSet) setEnvironment();
