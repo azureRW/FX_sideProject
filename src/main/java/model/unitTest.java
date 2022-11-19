@@ -4,6 +4,7 @@ import lombok.Data;
 import mappingObj.jpaEntranceForTradeData;
 import mappingObj.jpaEntranceForUsers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
 
@@ -89,7 +90,18 @@ public class unitTest {
 //    public void test(){
 //        System.out.println((behavior.login("Eric5","1234")));
 //    }
-    public void test(){
-        System.out.println(test);
+    //test EEEE
+//    public void test() throws ParseException {
+//        Date date = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+//        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date1 = sdf1.parse("2022-11-20");
+//        System.out.println(sdf.format(date));
+//        System.out.println(sdf.format(date1));
+//    }
+    @EventListener
+    public  void test(unitTest2 unit2){
+        System.out.println("test");
     }
+
 }

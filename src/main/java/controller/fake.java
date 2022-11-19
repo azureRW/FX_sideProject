@@ -2,8 +2,8 @@ package controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import model.metaAPI;
-import model.semiPersistence;
+import model.deep.metaAPI;
+import model.deep.semiPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

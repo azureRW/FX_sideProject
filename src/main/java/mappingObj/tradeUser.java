@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Data
@@ -25,8 +27,8 @@ public class tradeUser {
     @Column(name = "property")
     private double userProperty;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="outerKey")
-    private List<candleSet.tradeRecode> tradeRecodeList;
+    @JoinColumn(name = "outerJoin")
+    private List<userRecode> tradeRecodeList;
 
 
 

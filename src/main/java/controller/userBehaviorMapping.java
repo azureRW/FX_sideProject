@@ -17,9 +17,14 @@ public class userBehaviorMapping {
         System.out.println("sell!!!!!!!!");
         return behavior.sell(map.get("unit"));
     }
-    @GetMapping("/buy")
-    public String buy(){
+    @PostMapping("/buy")
+    public String buy(@RequestBody Map<String,Integer> map){
         System.out.println("buy!!!!!!!");
-        return behavior.buy();
+        return behavior.buy(map.get("unit"));
+    }
+    @GetMapping("/test")
+    public String test(){
+        behavior.test();
+        return "test compelte";
     }
 }

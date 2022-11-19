@@ -2,6 +2,6 @@ package mappingObj;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface paTest extends CrudRepository<tradeUser,Long> {
+public interface jpaTest extends CrudRepository<tradeUser,Long> {
 
 }

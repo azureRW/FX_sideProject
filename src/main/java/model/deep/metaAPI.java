@@ -1,4 +1,4 @@
-package model;
+package model.deep;
 
 import java.io.File;
 import java.io.IOException;
