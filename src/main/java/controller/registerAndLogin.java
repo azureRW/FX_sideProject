@@ -11,7 +11,7 @@ import java.util.HashMap;
 @CrossOrigin
 public class registerAndLogin {
     @Autowired
-    private userBehavior behabior;
+    private userBehavior behavior;
 @GetMapping("/test")
     public String test(){
     System.out.println("successful");
@@ -19,11 +19,11 @@ public class registerAndLogin {
     }
     @PostMapping(path = "register")
     public String register(@RequestBody HashMap<String,String> map){
-    return behabior.regitser(map.get("account"),map.get("password"));
+    return behavior.register(map.get("account"),map.get("password"));
     }
     @PostMapping(path = "login")
     public  String login(@RequestBody HashMap<String,String> map){
-    return behabior.login(map.get("account"), map.get("password"));
+    return behavior.login(map.get("account"), map.get("password"));
     }
 
 }

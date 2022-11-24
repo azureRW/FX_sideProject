@@ -20,5 +20,17 @@ public class userRecode {
     private float price;
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
+    private Boolean offset;
+    private double offsetPrice;
+    private double gain;
+    public String get(){
+        return "id="+id+
+                "type="+ type+
+                "price="+ price+
+                "unit="+ unit+
+                "time=" + time;
+    }
 
+    public userRecode() {
+    }
 }

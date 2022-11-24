@@ -27,4 +27,8 @@ public class userBehaviorMapping {
         behavior.test();
         return "test compelte";
     }
+    @GetMapping("/offset")
+    public String offset(){
+        return behavior.offset();
+    }
 }

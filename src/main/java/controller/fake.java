@@ -3,7 +3,6 @@ package controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import model.deep.metaAPI;
-import model.deep.semiPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +15,7 @@ import java.text.ParseException;
 public class fake {
     @Autowired
     private metaAPI meta;
-    @Autowired
-    private semiPersistence persistence;
+
 
   @GetMapping("/{id}")
   public String RUready(@PathVariable int id){
@@ -45,11 +43,7 @@ public class fake {
     public String getTime() throws JsonProcessingException, ParseException {
       return meta.getTime().toString();
     }
-    @GetMapping("/testForSemi")
-    public String SEMIpersistesnce() throws IOException, InterruptedException {
-      persistence.mainService();
-        return "test";
-    }
+
 
 
 }

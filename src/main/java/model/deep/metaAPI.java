@@ -13,6 +13,7 @@ import mappingObj.catchJson;
 import mappingObj.catchJsonFather;
 import mappingObj.currentPrice;
 import mappingObj.serverTime;
+import model.deep.fuckOfErrorHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

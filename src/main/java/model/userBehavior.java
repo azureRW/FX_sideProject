@@ -8,6 +8,7 @@ import model.deep.semiPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class userBehavior {
     private tradeUser userL;
 
     String type;
-public String regitser(String account,String password){
+public String register(String account, String password){
     if(!entrance.existsByUserAccount(account)) {
         tradeUser user = new tradeUser();
         user.setUserProperty(100000);
@@ -54,10 +55,11 @@ public String login(String account,String password){
         this.userL.setUserProperty(this.userL.getUserProperty()-unit*100000/100*bidPrice);
         userRecode recode = new userRecode();
         recode.setOuterJoin(userL.getId());
-        recode.setUnit(unit);
+        recode.setUnit(-1*unit);
         recode.setType("sell");
         recode.setTime(new Date());
         recode.setPrice(bidPrice);
+        recode.setOffset(false);
         dataEntrance.save(recode);
         entrance.save(this.userL);
 
@@ -78,6 +80,7 @@ public String login(String account,String password){
         recode.setType("buy");
         recode.setTime(new Date());
         recode.setPrice(askPrice);
+        recode.setOffset(false);
         dataEntrance.save(recode);
         entrance.save(this.userL);
         type="buy";
@@ -87,9 +90,45 @@ public String login(String account,String password){
     this.userL.setUserProperty(this.userL.getUserProperty()-0.05);
     entrance.save(userL);
     }
-    public void offset(){
-
-
+    public String offset() {
+        Optional<tradeUser> op = Optional.ofNullable(this.userL);
+        System.out.println(op.isEmpty());
+        if (op.isEmpty()) return "not login";
+        ArrayList<userRecode> list = dataEntrance.findByOuterJoinAndOffsetIsFalse(this.userL.getId());
+//        System.out.println("find");
+//        String s = new String();
+//        for (int i = 0; i < list.size(); i++) {
+//            s = s + list.get(i).get()+"\n";
+//        }
+        for(int i=0;i<list.size();i++){
+            userRecode re = list.get(i);
+            re.setOffset(true);
+            if(re.getType().equals("sell")){
+                float nowprice= persistence.getAsk();
+                double gain = (
+                        100000*re.getUnit()*(  nowprice-re.getPrice()  )//points differe
+                );
+                double margin = 100000/100*re.getPrice();
+                userL.setUserProperty(userL.getUserProperty()+gain+margin);
+                list.get(i).setOffset(true);
+                list.get(i).setOffsetPrice(nowprice);
+                list.get(i).setGain(gain);
+            }
+            else{
+                float nowprice = persistence.getBid();
+                double gain =(
+                        100000*re.getUnit()*(  nowprice-re.getPrice()  )
+                        );
+                double margin = 100000/100*re.getPrice();
+                userL.setUserProperty(userL.getUserProperty()+gain+margin);
+                list.get(i).setOffset(true);
+                list.get(i).setOffsetPrice(nowprice);
+                list.get(i).setGain(gain);
+            }
+            dataEntrance.saveAll(list);
+            entrance.save(userL);
+        }
+        return "offset";
     }
     public void logout(){
 

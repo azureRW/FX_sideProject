@@ -99,9 +99,8 @@ public class unitTest {
 //        System.out.println(sdf.format(date));
 //        System.out.println(sdf.format(date1));
 //    }
-    @EventListener
-    public  void test(unitTest2 unit2){
-        System.out.println("test");
-    }
+public  void test(){
+    System.out.println("test");
+}
 
 }
