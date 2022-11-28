@@ -4,6 +4,7 @@ import mappingObj.jpaEntranceForTradeData;
 import mappingObj.jpaEntranceForUsers;
 import mappingObj.tradeUser;
 import mappingObj.userRecode;
+import model.deep.forServerToken;
 import model.deep.semiPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,9 @@ public class userBehavior {
     private jpaEntranceForTradeData dataEntrance;
     @Autowired
     private semiPersistence persistence;
-    private tradeUser userL;
+    @Autowired
+    private forServerToken token;
+
 
     String type;
 public String register(String account, String password){
@@ -37,22 +40,24 @@ public String register(String account, String password){
 public String login(String account,String password){
     if(entrance.existsByUserAccount(account)){
         if(entrance.findByUserAccount(account).getUserPassword().equals(password)) {
-            this.userL = entrance.findByUserAccountAndUserPassword(account,password);
-            return "successful";
+            tradeUser userL = entrance.findByUserAccountAndUserPassword(account,password);
+
+            return "successes and serverToken is "+ token.getToken();
         }
         else return "password is wrong";
     }
     else return "account does not exist";
 }
-    public String sell(int unit){
+    public String sell(int unit,String user){
 
-//i have to manipulate db here to deduct user's caution money and save a trade recode to db
-//ask(賣出) and bid(買進) are at the point of financial institution, it means bid will be the price we sell to market and vice versa
-        Optional<tradeUser> op = Optional.ofNullable(this.userL);
+//i have to manipulate db here to deduct user's caution  and save a trade recode to db
+//ask(賣出價) and bid(買進價) are at the point of financial institution, it means bid will be the price we sell to market and vice versa
+        Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
         System.out.println(op.isEmpty());
         if(op.isEmpty()) return "not login";
+        tradeUser userL=op.get();
         float bidPrice= this.persistence.getBid();
-        this.userL.setUserProperty(this.userL.getUserProperty()-unit*100000/100*bidPrice);
+        userL.setUserProperty(userL.getUserProperty()-unit*100000/100*bidPrice);
         userRecode recode = new userRecode();
         recode.setOuterJoin(userL.getId());
         recode.setUnit(-1*unit);
@@ -61,19 +66,20 @@ public String login(String account,String password){
         recode.setPrice(bidPrice);
         recode.setOffset(false);
         dataEntrance.save(recode);
-        entrance.save(this.userL);
+        entrance.save(userL);
 
 
         type="sell";
         return "sell trade finish, sell "+unit*100000+" EUROS at "+bidPrice ;
 
     }
-    public String buy(int unit){
-        Optional<tradeUser> op = Optional.ofNullable(this.userL);
+    public String buy(int unit,String user){
+        Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
         System.out.println(op.isEmpty());
         if(op.isEmpty()) return "not login";
+        tradeUser userL=op.get();
         float askPrice = persistence.getAsk();
-        this.userL.setUserProperty(this.userL.getUserProperty()-unit*100000/100*askPrice);
+        userL.setUserProperty(userL.getUserProperty()-unit*100000/100*askPrice);
         userRecode recode = new userRecode();
         recode.setOuterJoin(userL.getId());
         recode.setUnit(unit);
@@ -82,19 +88,21 @@ public String login(String account,String password){
         recode.setPrice(askPrice);
         recode.setOffset(false);
         dataEntrance.save(recode);
-        entrance.save(this.userL);
+        entrance.save(userL);
         type="buy";
         return "buy trade finish, buy "+unit*100000+" EUROS at "+askPrice ;
     }
-    public void test(){
-    this.userL.setUserProperty(this.userL.getUserProperty()-0.05);
-    entrance.save(userL);
-    }
-    public String offset() {
-        Optional<tradeUser> op = Optional.ofNullable(this.userL);
+//    public void test(){
+//    this.userL.setUserProperty(this.userL.getUserProperty()-0.05);
+//    entrance.save(userL);
+//    }
+    public String offset(String user) {
+        Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
+        tradeUser userL=op.get();
+        Double ttg=0d;
         System.out.println(op.isEmpty());
         if (op.isEmpty()) return "not login";
-        ArrayList<userRecode> list = dataEntrance.findByOuterJoinAndOffsetIsFalse(this.userL.getId());
+        ArrayList<userRecode> list = dataEntrance.findByOuterJoinAndOffsetIsFalse(userL.getId());
 //        System.out.println("find");
 //        String s = new String();
 //        for (int i = 0; i < list.size(); i++) {
@@ -108,6 +116,7 @@ public String login(String account,String password){
                 double gain = (
                         100000*re.getUnit()*(  nowprice-re.getPrice()  )//points differe
                 );
+                ttg=ttg+gain;
                 double margin = 100000/100*re.getPrice();
                 userL.setUserProperty(userL.getUserProperty()+gain+margin);
                 list.get(i).setOffset(true);
@@ -119,16 +128,18 @@ public String login(String account,String password){
                 double gain =(
                         100000*re.getUnit()*(  nowprice-re.getPrice()  )
                         );
+                ttg=ttg+gain;
                 double margin = 100000/100*re.getPrice();
                 userL.setUserProperty(userL.getUserProperty()+gain+margin);
                 list.get(i).setOffset(true);
                 list.get(i).setOffsetPrice(nowprice);
                 list.get(i).setGain(gain);
             }
-            dataEntrance.saveAll(list);
-            entrance.save(userL);
+
         }
-        return "offset";
+        dataEntrance.saveAll(list);
+        entrance.save(userL);
+        return "offset! total gain is"+ttg;
     }
     public void logout(){
 

@@ -1,7 +1,6 @@
 package model.deep;
 
 import mappingObj.catchJsonFather;
-import model.unitTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class semiPersistence  {
@@ -22,8 +22,46 @@ public class semiPersistence  {
     private catchJsonFather father;
     @Autowired
     private model.deep.metaAPI metaAPI;
+//    @Autowired
+//    unitTest unit;
     @Autowired
-    unitTest unit;
+    subServiceOfSemi sub;
+
+
+    public String getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
+    }
+
+    private String userToken;
+
+@Deprecated
+    public Map<String,Float> subService00(Map<String, Float> map0) throws InterruptedException {
+        this.bid=this.bid+0.0005f;
+        this.ask=this.ask+0.0005f;
+        System.out.println("bid="+this.bid+" ask="+this.ask);
+        Map<String,Float> map=new HashMap<>();
+        map.put("bid",this.bid);
+        map.put("ask",this.ask);
+
+                return map;
+    }
+    @Deprecated
+    public Map<String, Float> subService01() throws InterruptedException, IOException {
+        HashMap<String, Float> map = metaAPI.getCurrentPrice();
+        System.out.println("bid="+map.get("bid") + " ask=" + map.get("ask"));
+        this.bid = map.get("bid");
+        this.ask = map.get("ask");
+        Map<String,Float> map0=new HashMap<>();
+        map.put("bid",this.bid);
+        map.put("ask",this.ask);
+
+                return map0;
+    }
+
 
 
     public void mainService () throws IOException, InterruptedException {
@@ -31,12 +69,16 @@ public class semiPersistence  {
             System.out.println("in weekend, we will use fake data");
             this.bid=1.03221f;
             this.ask=1.03240f;
+            Map<String,Float> map0=new HashMap<>();
+            map0.put("bid",this.bid);
+            map0.put("ask",this.ask);
+
 
             while(true){
-                this.bid=this.bid+0.0005f;
-                this.ask=this.ask+0.0005f;
-                System.out.println("bid="+this.bid+" ask="+this.ask);
-                Thread.sleep(3000);
+              Map<String,Float> map = sub.subService00(map0);
+                this.bid=map.get("bid");
+                this.ask=map.get("ask");
+              Thread.sleep(2500);
             }
 
         }
@@ -50,17 +92,17 @@ public class semiPersistence  {
                 Thread.sleep(5000);
             }
             while (true) {
-                HashMap<String, Float> map = metaAPI.getCurrentPrice();
-                System.out.println("bid="+map.get("bid") + " ask=" + map.get("ask"));
-                this.bid = map.get("bid");
-                this.ask = map.get("ask");
-                Thread.sleep(3000);
+                Map<String,Float> map = sub.subService01();
+                this.bid=map.get("bid");
+                this.ask=map.get("ask");
+               Thread.sleep(2500);
             }
         }
     }
 
     //use lambda method to implement asking price in multiple threads environment
     public void callMainService(){
+
         Thread myThread = new Thread(()->{
             try {
                 this.mainService();
@@ -97,4 +139,6 @@ public class semiPersistence  {
     public void setB(Boolean b) {
         this.b = b;
     }
+
+
 }

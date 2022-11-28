@@ -12,23 +12,23 @@ import java.util.Map;
 public class userBehaviorMapping {
     @Autowired
     userBehavior behavior;
-    @PostMapping ("/sell")
-    public String sell(@RequestBody Map<String, Integer> map){
-        System.out.println("sell!!!!!!!!");
-        return behavior.sell(map.get("unit"));
-    }
-    @PostMapping("/buy")
-    public String buy(@RequestBody Map<String,Integer> map){
-        System.out.println("buy!!!!!!!");
-        return behavior.buy(map.get("unit"));
-    }
-    @GetMapping("/test")
-    public String test(){
-        behavior.test();
-        return "test compelte";
-    }
-    @GetMapping("/offset")
-    public String offset(){
-        return behavior.offset();
-    }
+//    @PostMapping ("/sell")
+//    public String sell(@RequestBody Map<String, Integer> map){
+//        System.out.println("sell!!!!!!!!");
+//        return behavior.sell(map.get("unit"));
+//    }
+//    @PostMapping("/buy")
+//    public String buy(@RequestBody Map<String,Integer> map){
+//        System.out.println("buy!!!!!!!");
+//        return behavior.buy(map.get("unit"));
+//    }
+//    @GetMapping("/test")
+//    public String test(){
+//        behavior.test();
+//        return "test compelte";
+//    }
+//    @GetMapping("/offset")
+//    public String offset(){
+//        return behavior.offset();
+//    }
 }

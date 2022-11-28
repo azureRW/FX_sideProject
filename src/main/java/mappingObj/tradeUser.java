@@ -26,6 +26,7 @@ public class tradeUser {
     private String userPassword;
     @Column(name = "property")
     private double userProperty;
+    private String SessionID;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "outerJoin")
     private List<userRecode> tradeRecodeList;

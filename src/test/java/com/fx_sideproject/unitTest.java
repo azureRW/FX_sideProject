@@ -1,4 +1,4 @@
-package model;
+package com.fx_sideproject;
 
 import lombok.Data;
 import mappingObj.jpaEntranceForTradeData;

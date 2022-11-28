@@ -7,7 +7,7 @@ public class message {
     private String content;
 
     public message(String s) {
-        this.content=s;
+        this.content= s;
     }
     public message(){}
 }
