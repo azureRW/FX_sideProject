@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.text.ParseException;
 
 
-@RestController
-@RequestMapping("/fakeTerminal")
+//@RestController
+//@RequestMapping("/fakeTerminal")
 public class fake {
     @Autowired
     private metaAPI meta;

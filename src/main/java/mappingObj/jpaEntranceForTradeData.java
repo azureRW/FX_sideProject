@@ -8,4 +8,5 @@ import java.util.Iterator;
 
 public interface jpaEntranceForTradeData extends CrudRepository<userRecode,Long> {
     ArrayList<userRecode> findByOuterJoinAndOffsetIsFalse(Long out);
+    ArrayList<userRecode> findByOuterJoin(Long out);
 }

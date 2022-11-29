@@ -28,7 +28,6 @@ public class FxSideProjectApplication {
         semiPersistence bean2=ctx.getBean(semiPersistence.class);
         bean2.callMainService();
 
-//        bean2.mainService();
 
 
     }

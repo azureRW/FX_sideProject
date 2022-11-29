@@ -19,23 +19,23 @@ public class websocket {
     SimpMessagingTemplate template;
     @Autowired
     userBehavior behavior;
-    @MessageMapping("message")
+    @MessageMapping("/message")
     public String test(message ms,Principal principal) throws InterruptedException {
         System.out.println("test is run");
 //        return new message("i throw back "+ ms.getContent());
         return "tesr";
     }
-    @MessageMapping("trade/buy")
+    @MessageMapping("/trade/buy")
     public void buy(message ms,Principal principal){
          template.convertAndSend("/topic/"+principal.getName().trim()
                 ,new message(behavior.buy(1,ms.getContent())));
     }
-    @MessageMapping("trade/sell")
+    @MessageMapping("/trade/sell")
     public void sell(message ms,Principal principal){
         template.convertAndSend("/topic/"+principal.getName().trim()
                 ,new message(behavior.sell(1,ms.getContent())));
     }
-    @MessageMapping("trade/offset")
+    @MessageMapping("/trade/offset")
     public void offset(message ms,Principal principal){
          template.convertAndSend("/topic/"+principal.getName().trim()
                 ,new message(behavior.offset(ms.getContent())));
@@ -50,6 +50,12 @@ public class websocket {
 //    }
 //i am moved to aop package
 
+    @MessageMapping("/trade/showHistory")
+    public void history(message ms,Principal principal){
+        System.out.println("history");
+        template.convertAndSend("/topic/"+principal.getName().trim(),
+                behavior.history(ms.getContent().trim()));
+    }
     @MessageMapping("/login")
     public void login(@Header("simpSessionId") String sessionId) {
     System.out.println(sessionId);

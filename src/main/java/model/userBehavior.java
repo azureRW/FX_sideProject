@@ -1,5 +1,6 @@
 package model;
 
+import mappingObj.forWebsocket.message;
 import mappingObj.jpaEntranceForTradeData;
 import mappingObj.jpaEntranceForUsers;
 import mappingObj.tradeUser;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -50,8 +52,8 @@ public String login(String account,String password){
 }
     public String sell(int unit,String user){
 
-//i have to manipulate db here to deduct user's caution  and save a trade recode to db
-//ask(賣出價) and bid(買進價) are at the point of financial institution, it means bid will be the price we sell to market and vice versa
+//i have to manipulate db here to deduct user's caution and save a trade recode to db
+//ask(賣出價) and bid(買進價) are at the point of financial institution, it means bid will be the price we(user) sell to market and vice versa
         Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
         System.out.println(op.isEmpty());
         if(op.isEmpty()) return "not login";
@@ -71,7 +73,6 @@ public String login(String account,String password){
 
         type="sell";
         return "sell trade finish, sell "+unit*100000+" EUROS at "+bidPrice ;
-
     }
     public String buy(int unit,String user){
         Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
@@ -108,40 +109,53 @@ public String login(String account,String password){
 //        for (int i = 0; i < list.size(); i++) {
 //            s = s + list.get(i).get()+"\n";
 //        }
-        for(int i=0;i<list.size();i++){
-            userRecode re = list.get(i);
-            re.setOffset(true);
-            if(re.getType().equals("sell")){
-                float nowprice= persistence.getAsk();
-                double gain = (
-                        100000*re.getUnit()*(  nowprice-re.getPrice()  )//points differe
-                );
-                ttg=ttg+gain;
-                double margin = 100000/100*re.getPrice();
-                userL.setUserProperty(userL.getUserProperty()+gain+margin);
-                list.get(i).setOffset(true);
-                list.get(i).setOffsetPrice(nowprice);
-                list.get(i).setGain(gain);
-            }
-            else{
-                float nowprice = persistence.getBid();
-                double gain =(
-                        100000*re.getUnit()*(  nowprice-re.getPrice()  )
-                        );
-                ttg=ttg+gain;
-                double margin = 100000/100*re.getPrice();
-                userL.setUserProperty(userL.getUserProperty()+gain+margin);
-                list.get(i).setOffset(true);
-                list.get(i).setOffsetPrice(nowprice);
-                list.get(i).setGain(gain);
-            }
+        if(list.size()!=0) {
+            for (int i = 0; i < list.size(); i++) {
+                userRecode re = list.get(i);
+                re.setOffset(true);
+                if (re.getType().equals("sell")) {
+                    float nowprice = persistence.getAsk();
+                    double gain = (
+                            100000 * re.getUnit() * (nowprice - re.getPrice())//points differe
+                    );
+                    ttg = ttg + gain;
+                    double margin = 100000 / 100 * re.getPrice();
+                    userL.setUserProperty(userL.getUserProperty() + gain + margin);
+                    list.get(i).setOffset(true);
+                    list.get(i).setOffsetPrice(nowprice);
+                    list.get(i).setGain(gain);
+                } else {
+                    float nowprice = persistence.getBid();
+                    double gain = (
+                            100000 * re.getUnit() * (nowprice - re.getPrice())
+                    );
+                    ttg = ttg + gain;
+                    double margin = 100000 / 100 * re.getPrice();
+                    userL.setUserProperty(userL.getUserProperty() + gain + margin);
+                    list.get(i).setOffset(true);
+                    list.get(i).setOffsetPrice(nowprice);
+                    list.get(i).setGain(gain);
+                }
 
+            }
+            dataEntrance.saveAll(list);
+            entrance.save(userL);
+            return "offset! total gain is " + ttg;
         }
-        dataEntrance.saveAll(list);
-        entrance.save(userL);
-        return "offset! total gain is"+ttg;
+        else return "non deal to offset";
     }
-    public void logout(){
 
+public message history(String userAccount){
+    message res = new message(null);
+    List<userRecode> list = dataEntrance.findByOuterJoin(
+            (entrance.findByUserAccount(userAccount)).getId());
+    res.setExtra(list);
+  return res;
+};
+
+
+
+    public void logout(){
+            //just have no idea what should i do here
     }
 }

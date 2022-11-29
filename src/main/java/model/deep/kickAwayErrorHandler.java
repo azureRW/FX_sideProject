@@ -6,7 +6,7 @@ import org.springframework.web.client.ResponseErrorHandler;
 
 import java.io.IOException;
 @Controller
-public class fuckOfErrorHandler implements ResponseErrorHandler {
+public class kickAwayErrorHandler implements ResponseErrorHandler {
 
 
     @Override

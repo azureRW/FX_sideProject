@@ -13,7 +13,6 @@ import mappingObj.catchJson;
 import mappingObj.catchJsonFather;
 import mappingObj.currentPrice;
 import mappingObj.serverTime;
-import model.deep.fuckOfErrorHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -75,7 +74,7 @@ public class metaAPI {
         if (!EnvironmentIsSet) setEnvironment();
         if(!AccountStatusTest())//if account doesn't be deployed, I will run
         {
-            restTemplate.setErrorHandler(new fuckOfErrorHandler());
+            restTemplate.setErrorHandler(new kickAwayErrorHandler());
             ResponseEntity<String> response= restTemplate.postForEntity(
                     "https://mt-provisioning-api-v1.agiliumtrade.agiliumtrade.ai/users/current/accounts/"+accountId+"/deploy?executeForAllReplicas=true"
                     ,new HttpEntity<String>(null, headers)
