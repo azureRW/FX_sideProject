@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -25,8 +26,10 @@ import java.util.logging.Logger;
 public class websocketConfig implements WebSocketMessageBrokerConfigurer {
     @Autowired
     private forServerToken semi;
-    @Autowired
-    private myHandshake hand;
+//    @Autowired
+//    private myHandshake hand;
+//    @Autowired
+//RmeSessionChannelInterceptor rmeSessionChannelInterceptor;
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         //prefixes for client
@@ -47,11 +50,15 @@ public class websocketConfig implements WebSocketMessageBrokerConfigurer {
         @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
         //register endpoint, people who went to send or catch message must connect this endpoint first
-        registry.addEndpoint("/websocket/"+semi.getToken())
+        registry.addEndpoint("/websocket/")
                 .setAllowedOriginPatterns("*")
-                .setHandshakeHandler(hand)
+//                .setAllowedOrigins("http://localhost:63342/*")
+//                .setHandshakeHandler(hand)
                 .withSockJS();
     }
 
-
+//    @Override
+//    public void configureClientInboundChannel(ChannelRegistration registration) {
+//        registration.setInterceptors(rmeSessionChannelInterceptor);
+//    }
 }

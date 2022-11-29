@@ -32,17 +32,20 @@ public class websocket {
 //        return new message("i throw back "+ ms.getContent());
 //        return "tesr";
     }
-    @MessageMapping("/trade/buy")
+    @Deprecated
+//    @MessageMapping("/trade/buy")
     public void doBuy(message ms,Principal principal){
          template.convertAndSend("/topic/"+principal.getName().trim()
                 ,new message(behavior.buy(1,ms.getContent())));
     }
-    @MessageMapping("/trade/sell")
+    @Deprecated
+//    @MessageMapping("/trade/sell")
     public void doSell(message ms,Principal principal){
         template.convertAndSend("/topic/"+principal.getName().trim()
                 ,new message(behavior.sell(1,ms.getContent())));
     }
-    @MessageMapping("/trade/offset")
+    @Deprecated
+//    @MessageMapping("/trade/offset")
     public void doOffset(message ms,Principal principal){
          template.convertAndSend("/topic/"+principal.getName().trim()
                 ,new message(behavior.offset(ms.getContent())));
@@ -57,13 +60,13 @@ public class websocket {
 //    }
 //i am moved to aop package
 
-    @MessageMapping("/trade/showHistory")
+//    @MessageMapping("/trade/showHistory")
     public void history(message ms,Principal principal){
         System.out.println("history");
         template.convertAndSend("/topic/"+principal.getName().trim(),
                 behavior.history(ms.getContent().trim()));
     }
-    @MessageMapping("/login")
+//    @MessageMapping("/login")
     public void login(@Header("simpSessionId") String sessionId) {
     System.out.println(sessionId);
 }

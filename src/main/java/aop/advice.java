@@ -48,7 +48,8 @@ public class advice {
         System.out.println("aop property run");
         Object o[]=point.getArgs();
         Object re = point.proceed();
-        template.convertAndSend("/topic/propertyInfo/"+((Principal)o[1]).getName().trim(),
+        String uuid = ((Principal)o[1]).getName().trim();
+        template.convertAndSend("/topic/propertyInfo/"+uuid,
                                 new message(Double.toString(entrance.findByUserAccount(((message)o[0]).getContent()).getUserProperty()))
         );
 

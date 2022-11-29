@@ -13,13 +13,13 @@ import java.util.Optional;
 
 @Component
 public class userDetail implements UserDetailsService {
+
     @Autowired
     jpaEntranceForUsers entrance;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Boolean b = entrance.existsByUserAccount(username);
-        if(b){}
-        else throw new RuntimeException("username does not exisr");
+        Boolean exist = entrance.existsByUserAccount(username);
+        if(!exist) throw new RuntimeException("username does not exist");
         return new implUserDetail(entrance.findByUserAccount(username));
     }
 }

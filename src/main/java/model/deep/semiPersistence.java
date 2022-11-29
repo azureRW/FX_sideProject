@@ -9,10 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 public class semiPersistence  {
     private Date date =new Date();
+    private Map<String,String> IDset = new HashMap<>();
     private SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
     private String WD = sdf.format(date);
     private float bid;
@@ -62,6 +64,19 @@ public class semiPersistence  {
                 return map0;
     }
 
+public void userTokerSet(String userAccount){
+    this.IDset.put(userAccount,UUID.randomUUID().toString());
+    this.IDset.put(IDset.get(userAccount),userAccount);
+}
+public String account2Uuid(String userAccount){
+    return this.IDset.get(userAccount);
+}
+public Boolean idExist(String userAccount){
+    return  this.IDset.containsKey(userAccount);
+}
+public String uuidToAcount(String uuid){
+    return this.IDset.get(uuid);
+}
 
 
     public void mainService () throws IOException, InterruptedException {

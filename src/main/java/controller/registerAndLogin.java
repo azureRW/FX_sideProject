@@ -1,8 +1,10 @@
 package controller;
 
+import lombok.NoArgsConstructor;
 import model.userBehavior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import security.newLogin;
 
 import java.util.HashMap;
 
@@ -12,6 +14,8 @@ import java.util.HashMap;
 public class registerAndLogin {
     @Autowired
     private userBehavior behavior;
+    @Autowired//cuz log. info. will pass a lot of filters ,it has to be managed by framework
+    private newLogin newLogin;
 @GetMapping("/test")
     public String test(){
     System.out.println("successful");
@@ -23,7 +27,9 @@ public class registerAndLogin {
     }
     @PostMapping(path = "login")
     public  String login(@RequestBody HashMap<String,String> map){
-    return behavior.login(map.get("account"), map.get("password"));
+//    return behavior.login(map.get("account"), map.get("password"));
+
+        return newLogin.login(map);
     }
 
 }

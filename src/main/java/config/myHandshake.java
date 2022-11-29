@@ -13,7 +13,7 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import java.security.Principal;
 import java.util.Map;
 import java.util.UUID;
-@Controller
+//@Controller
 public class myHandshake extends DefaultHandshakeHandler {
     private Logger log = LoggerFactory.getLogger(myHandshake.class);
     @Autowired
@@ -21,6 +21,9 @@ public class myHandshake extends DefaultHandshakeHandler {
 
     @Override
     protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
+        System.out.println("=================");
+        System.out.println(request.getPrincipal().getName());
+        System.out.println("================");
         final String randomID = UUID.randomUUID().toString();
         log.info("user id :'{}' open a session" ,randomID);
         System.out.println("user id "+ randomID + " is connect");

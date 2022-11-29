@@ -28,7 +28,7 @@ public class FxSideProjectApplication {
     public static void main(String[] args) throws IOException, ParseException, InterruptedException {
         ConfigurableApplicationContext ctx = SpringApplication.run(FxSideProjectApplication.class, args);
         semiPersistence bean2=ctx.getBean(semiPersistence.class);
-//        bean2.callMainService();
+        bean2.callMainService();
 
 
 
