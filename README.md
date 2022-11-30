@@ -1,4 +1,4 @@
-# FX_practiceProject
+# FX_sideProject
 
 *2022-11-29 21:56:28 Tuesday*
 
