@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.text.ParseException;
 
 
-//@RestController
-//@RequestMapping("/fakeTerminal")
+@RestController
+@RequestMapping("/fakeTerminal")
 public class fake {
     @Autowired
     private metaAPI meta;
@@ -36,7 +36,7 @@ public class fake {
     }
     @GetMapping("/test")
     public String testForCandle() throws IOException, ParseException {
-      meta.getCurrentCandle();
+//      meta.getCurrentCandle();
       return "test";
     }
     @GetMapping("/time")

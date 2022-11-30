@@ -1,10 +1,9 @@
 package com.fx_sideproject;
 
 import lombok.Data;
-import mappingObj.jpaEntranceForTradeData;
-import mappingObj.jpaEntranceForUsers;
+import mappingObj.dao.jpaEntranceForTradeData;
+import mappingObj.dao.jpaEntranceForUsers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
 

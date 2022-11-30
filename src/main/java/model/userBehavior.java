@@ -1,8 +1,8 @@
 package model;
 
 import mappingObj.forWebsocket.message;
-import mappingObj.jpaEntranceForTradeData;
-import mappingObj.jpaEntranceForUsers;
+import mappingObj.dao.jpaEntranceForTradeData;
+import mappingObj.dao.jpaEntranceForUsers;
 import mappingObj.tradeUser;
 import mappingObj.userRecode;
 import model.deep.forServerToken;

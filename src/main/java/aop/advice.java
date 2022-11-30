@@ -1,11 +1,10 @@
 package aop;
 
 import mappingObj.forWebsocket.message;
-import mappingObj.jpaEntranceForUsers;
+import mappingObj.dao.jpaEntranceForUsers;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -42,7 +41,7 @@ public class advice {
 //    public void test(){
 //        System.out.println("aop test");
 //    }
-    @Pointcut("execution(* controller.websocket.*(..))")
+    @Pointcut("execution(* controller.websocket.do*(..))")
     private void pt3(){};
     @Around("pt3()")
     public Object printProperty00(ProceedingJoinPoint point) throws Throwable {

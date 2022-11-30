@@ -1,6 +1,7 @@
-package mappingObj;
+package mappingObj.dao;
 
 import antlr.collections.List;
+import mappingObj.userRecode;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.ArrayList;

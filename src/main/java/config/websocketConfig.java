@@ -35,7 +35,7 @@ public class websocketConfig implements WebSocketMessageBrokerConfigurer {
         // sub-endpoint address is written in MessageMapping anno.
 
         //prefixes for server
-        registry.enableSimpleBroker("/topic");
+        registry.enableSimpleBroker("/topic", "/queue", "/user");
         //the one who subscribes this broker can get (broadcast) message
         // its sub-protocol will be written in SendTo anno.
         // something different between applicationDestination
