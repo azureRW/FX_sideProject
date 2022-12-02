@@ -2,6 +2,7 @@ package aop;
 
 import mappingObj.forWebsocket.message;
 import mappingObj.dao.jpaEntranceForUsers;
+import model.deep.semiPersistence;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,6 +22,8 @@ public class advice {
      SimpMessagingTemplate template;
      @Autowired
      jpaEntranceForUsers entrance;
+     @Autowired
+     semiPersistence semi;
     @Pointcut( "execution(java.util.Map<String,Float> model.deep.subServiceOfSemi.subService*(..))")
     private void pt1(){};
     @Around("pt1()")
@@ -35,24 +38,39 @@ public class advice {
         template.convertAndSend("/topic/price",newmap);
         return map;
     }
-//    @Pointcut("execution(void model.deep.semiPersistence.mainService() )")
+
+    //    @Pointcut("execution(void model.deep.semiPersistence.mainService() )")
 //    private void pt2(){}
 //    @Before("pt2()")
 //    public void test(){
 //        System.out.println("aop test");
 //    }
-    @Pointcut("execution(* controller.websocket.do*(..))")
-    private void pt3(){};
-    @Around("pt3()")
-    public Object printProperty00(ProceedingJoinPoint point) throws Throwable {
-        System.out.println("aop property run");
+//    @Pointcut("execution(* controller.websocket.do*(..))")
+//    private void pt3(){};
+//    @Around("pt3()")
+//    public Object printProperty00(ProceedingJoinPoint point) throws Throwable {
+//        System.out.println("aop property run");
+//        Object o[]=point.getArgs();
+//        Object re = point.proceed();
+//        String uuid = ((Principal)o[1]).getName().trim();
+//        template.convertAndSend("/topic/propertyInfo/"+uuid,
+//                                new message(Double.toString(entrance.findByUserAccount(((message)o[0]).getContent()).getUserProperty()))
+//        );
+//
+//        return re;
+//    }
+    @Pointcut("execution(* model.userBehavior.userX*(..))")
+    private void pt4() {}
+    @Around("pt4()")
+    public Object printPropertyForHTTP(ProceedingJoinPoint point) throws Throwable {
         Object o[]=point.getArgs();
+        String account = (String) o[0];
+        String id= semi.account2Uuid(account);
         Object re = point.proceed();
-        String uuid = ((Principal)o[1]).getName().trim();
-        template.convertAndSend("/topic/propertyInfo/"+uuid,
-                                new message(Double.toString(entrance.findByUserAccount(((message)o[0]).getContent()).getUserProperty()))
-        );
-
+        double property = entrance.findByUserAccount(account).getUserProperty();
+//        System.out.println("================================");
+//        System.out.println("id="+id);
+        template.convertAndSend("/topic/propertyInfo/"+id,new message(Double.toString(property)));
         return re;
     }
 

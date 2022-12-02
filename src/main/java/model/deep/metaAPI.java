@@ -52,7 +52,8 @@ public class metaAPI {
                 , HttpMethod.GET
                 ,new HttpEntity<String>(this.headers)
                 ,String.class);
-        System.out.println(res.getBody());
+        //print info. from metaApi directly
+//        System.out.println(res.getBody());
         return res;
     }
        public HashMap<String, Float> getCurrentPrice() throws InterruptedException, IOException {

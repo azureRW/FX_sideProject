@@ -16,7 +16,7 @@ import java.util.Objects;
 @Service
 public class newLogin {
 
-    @Autowired//from AuthenticationManager in security config
+    @Autowired//from AuthenticationManager in security config, we declared it in config then we can access it here
     private AuthenticationManager authenticationManager;
     @Autowired
     semiPersistence semi;

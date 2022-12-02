@@ -50,7 +50,7 @@ public String login(String account,String password){
     }
     else return "account does not exist";
 }
-    public String sell(int unit,String user){
+    public String userXsell(String user,int unit){
 
 //i have to manipulate db here to deduct user's caution and save a trade recode to db
 //ask(賣出價) and bid(買進價) are at the point of financial institution, it means bid will be the price we(user) sell to market and vice versa
@@ -74,7 +74,7 @@ public String login(String account,String password){
         type="sell";
         return "sell trade finish, sell "+unit*100000+" EUROS at "+bidPrice ;
     }
-    public String buy(int unit,String user){
+    public String userXbuy(String user,int unit){
         Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
         System.out.println(op.isEmpty());
         if(op.isEmpty()) return "not login";
@@ -97,7 +97,7 @@ public String login(String account,String password){
 //    this.userL.setUserProperty(this.userL.getUserProperty()-0.05);
 //    entrance.save(userL);
 //    }
-    public String offset(String user) {
+    public String userXoffset(String user) {
         Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
         tradeUser userL=op.get();
         Double ttg=0d;
@@ -153,7 +153,9 @@ public message history(String userAccount){
   return res;
 };
 
-
+public void userXtest(String Account){
+    System.out.println("test");
+}
 
     public void logout(){
             //just have no idea what should i do here

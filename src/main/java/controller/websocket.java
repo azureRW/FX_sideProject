@@ -16,41 +16,40 @@ import java.security.Principal;
 import java.util.HashMap;
 
 
-@Controller
-public class websocket {
-    @Autowired
-    SimpMessagingTemplate template;
-    @Autowired
-    userBehavior behavior;
-    @MessageMapping("/message")
-    public void test(message ms,Principal principal) throws InterruptedException {
-        System.out.println("test is run");
-        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.DISCONNECT);
-        headerAccessor.setSessionId(principal.getName().trim());
-        headerAccessor.setLeaveMutable(true);
-        template.convertAndSend("/topic/"+principal.getName().trim(),"",headerAccessor.getMessageHeaders());
+//@Controller
+//public class websocket {
+//    @Autowired
+//    SimpMessagingTemplate template;
+//    @Autowired
+//    userBehavior behavior;
+//    @MessageMapping("/message")
+//    public void test(message ms,Principal principal) throws InterruptedException {
+//        System.out.println("test is run");
+//        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.DISCONNECT);
+//        headerAccessor.setSessionId(principal.getName().trim());
+//        headerAccessor.setLeaveMutable(true);
+//        template.convertAndSend("/topic/"+principal.getName().trim(),"",headerAccessor.getMessageHeaders());
 //        return new message("i throw back "+ ms.getContent());
 //        return "tesr";
-    }
-    @Deprecated
+//    }
 //    @MessageMapping("/trade/buy")
-    public void doBuy(message ms,Principal principal){
-         template.convertAndSend("/topic/"+principal.getName().trim()
-                ,new message(behavior.buy(1,ms.getContent())));
-    }
-    @Deprecated
+//    public void doBuy(message ms,Principal principal){
+//         template.convertAndSend("/topic/"+principal.getName().trim()
+//                ,new message(behavior.buy(1,ms.getContent())));
+//    }
+//    @Deprecated
 //    @MessageMapping("/trade/sell")
-    public void doSell(message ms,Principal principal){
-        template.convertAndSend("/topic/"+principal.getName().trim()
-                ,new message(behavior.sell(1,ms.getContent())));
-    }
-    @Deprecated
+//    public void doSell(message ms,Principal principal){
+//        template.convertAndSend("/topic/"+principal.getName().trim()
+//                ,new message(behavior.sell(1,ms.getContent())));
+//    }
+//    @Deprecated
 //    @MessageMapping("/trade/offset")
-    public void doOffset(message ms,Principal principal){
-         template.convertAndSend("/topic/"+principal.getName().trim()
-                ,new message(behavior.offset(ms.getContent())));
-    }
-
+//    public void doOffset(message ms,Principal principal){
+//         template.convertAndSend("/topic/"+principal.getName().trim()
+//                ,new message(behavior.offset(ms.getContent())));
+//    }
+//
 //    public void broadcastPrice(Float ask,Float bid){
 //        Map<String,String> map = new HashMap<>();
 //        map.put("ask",ask.toString());
@@ -59,17 +58,17 @@ public class websocket {
 //        template.convertAndSend("/topic/price",map);
 //    }
 //i am moved to aop package
-
+//
 //    @MessageMapping("/trade/showHistory")
-    public void history(message ms,Principal principal){
-        System.out.println("history");
-        template.convertAndSend("/topic/"+principal.getName().trim(),
-                behavior.history(ms.getContent().trim()));
-    }
+//    public void history(message ms,Principal principal){
+//        System.out.println("history");
+//        template.convertAndSend("/topic/"+principal.getName().trim(),
+//                behavior.history(ms.getContent().trim()));
+//    }
 //    @MessageMapping("/login")
-    public void login(@Header("simpSessionId") String sessionId) {
-    System.out.println(sessionId);
-}
-
-
-}
+//    public void login(@Header("simpSessionId") String sessionId) {
+//    System.out.println(sessionId);
+//}
+//
+//
+//}

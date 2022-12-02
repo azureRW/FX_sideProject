@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @RestController
-@RequestMapping("/userBehavior/userBehavior")
+@RequestMapping("/userBehavior")
 @CrossOrigin
 public class userBehaviorMapping {
     @Autowired
@@ -22,23 +24,38 @@ public class userBehaviorMapping {
     semiPersistence semi;
 
     @PostMapping ("/sell")
-    public String sell(@RequestHeader String header){
-         template.convertAndSend("/topic/"+header
-                ,new message(behavior.buy(1,semi.uuidToAcount(header))));
+    public String sell(@RequestHeader(value = "id") String id,@RequestBody Map<String,String> map){
+        System.out.println("sell is called, content= "+map.get("content"));
+         template.convertAndSend("/topic/"+id
+                ,new message(behavior.userXsell(semi.uuidToAcount(id),1)));
         return "sell success";
     }
-//    @PostMapping("/buy")
-//    public String buy(@RequestBody Map<String,Integer> map){
-//        System.out.println("buy!!!!!!!");
-//        return behavior.buy(map.get("unit"));
-//    }
-//    @GetMapping("/test")
-//    public String test(){
-//        behavior.test();
-//        return "test compelte";
-//    }
-//    @GetMapping("/offset")
-//    public String offset(){
-//        return behavior.offset();
-//    }
+   @PostMapping ("/buy")
+    public String buy(@RequestHeader(value = "id") String id,@RequestBody Map<String,String> map){
+        System.out.println("buy is called, content="+map.get("content"));
+         template.convertAndSend("/topic/"+id
+                ,new message(behavior.userXbuy(semi.uuidToAcount(id),1)));
+        return "buy success";
+    }
+    @GetMapping("/test")
+    public String test(@RequestHeader(value = "id") String id){
+        System.out.println("=============");
+        System.out.println("do test");
+        behavior.userXtest(semi.uuidToAcount(id));
+        return "test compelte";
+    }
+    @GetMapping("/offset")
+    public String offset(@RequestHeader(value = "id") String id){
+        System.out.println("===============");
+        System.out.println("do offset");
+        String res=behavior.userXoffset(semi.uuidToAcount(id));
+        template.convertAndSend("/topic/"+id,new message(res));
+        return "offset";
+    }
+    @GetMapping("/history")
+    public String history(@RequestHeader(value = "id") String id){
+        template.convertAndSend("/topic/"+id,
+                behavior.history(semi.uuidToAcount(id)));
+       return "history";
+    }
 }
