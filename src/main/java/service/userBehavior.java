@@ -8,7 +8,6 @@ import model.deep.semiPersistence;
 import model.tradeUser;
 import model.userRecode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class userBehavior {
     @Autowired
     private jpaEntranceForTradeData dataEntrance;
     @Autowired
-    private semiPersistence persistence;
+    private semiPersistence semi;
     @Autowired
     private forServerToken token;
 
@@ -59,7 +58,7 @@ public String login(String account,String password){
         System.out.println(op.isEmpty());
         if(op.isEmpty()) return "not login";
         tradeUser userL=op.get();
-        float bidPrice= this.persistence.getBid();
+        float bidPrice= this.semi.getBid();
         userL.setUserProperty(userL.getUserProperty()-unit*100000/100*bidPrice);
         userRecode recode = new userRecode();
         recode.setOuterJoin(userL.getId());
@@ -80,7 +79,7 @@ public String login(String account,String password){
         System.out.println(op.isEmpty());
         if(op.isEmpty()) return "not login";
         tradeUser userL=op.get();
-        float askPrice = persistence.getAsk();
+        float askPrice = semi.getAsk();
         userL.setUserProperty(userL.getUserProperty()-unit*100000/100*askPrice);
         userRecode recode = new userRecode();
         recode.setOuterJoin(userL.getId());
@@ -115,7 +114,7 @@ public String login(String account,String password){
                 userRecode re = list.get(i);
                 re.setOffset(true);
                 if (re.getType().equals("sell")) {
-                    float nowprice = persistence.getAsk();
+                    float nowprice = semi.getAsk();
                     double gain = (
                             100000 * re.getUnit() * (nowprice - re.getPrice())//points differe
                     );
@@ -126,7 +125,7 @@ public String login(String account,String password){
                     list.get(i).setOffsetPrice(nowprice);
                     list.get(i).setGain(gain);
                 } else {
-                    float nowprice = persistence.getBid();
+                    float nowprice = semi.getBid();
                     double gain = (
                             100000 * re.getUnit() * (nowprice - re.getPrice())
                     );
@@ -159,6 +158,6 @@ public void userXtest(String Account){
 }
 
     public void logout(String id){
-            //just have no idea what should i do here
+   semi.removeByIdOrAccount(id);
     }
 }

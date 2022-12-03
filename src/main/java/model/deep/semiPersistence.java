@@ -32,31 +32,10 @@ public class semiPersistence  {
 
 
 
-    private String userToken;
 
-@Deprecated
-    public Map<String,Float> subService00(Map<String, Float> map0) throws InterruptedException {
-        this.bid=this.bid+0.0005f;
-        this.ask=this.ask+0.0005f;
-        System.out.println("bid="+this.bid+" ask="+this.ask);
-        Map<String,Float> map=new HashMap<>();
-        map.put("bid",this.bid);
-        map.put("ask",this.ask);
 
-                return map;
-    }
-    @Deprecated
-    public Map<String, Float> subService01() throws InterruptedException, IOException {
-        HashMap<String, Float> map = metaAPI.getCurrentPrice();
-        System.out.println("bid="+map.get("bid") + " ask=" + map.get("ask"));
-        this.bid = map.get("bid");
-        this.ask = map.get("ask");
-        Map<String,Float> map0=new HashMap<>();
-        map.put("bid",this.bid);
-        map.put("ask",this.ask);
 
-                return map0;
-    }
+
 
 public void userTokerSet(String userAccount){
     this.IdAccount.put(userAccount,UUID.randomUUID().toString());
@@ -69,7 +48,11 @@ public Boolean idOrAccountIsExist(String s){return  this.IdAccount.containsKey(s
 public String uuidToAcount(String uuid){
     return this.IdAccount.get(uuid);
 }
-
+public void removeByIdOrAccount(String s){
+    String value= this.IdAccount.get(s);
+    this.IdAccount.remove(s);
+    this.IdAccount.remove(value);
+}
 
 
 

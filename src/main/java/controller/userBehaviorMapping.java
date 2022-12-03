@@ -55,4 +55,9 @@ public class userBehaviorMapping {
                 behavior.history(semi.uuidToAcount(id)));
        return "history";
     }
+    @GetMapping("/logout")
+    public String logout(@RequestHeader(value = "id")String id){
+        behavior.logout(id);
+        return "logout";
+    }
 }

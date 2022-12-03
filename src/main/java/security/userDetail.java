@@ -17,5 +17,5 @@ public class userDetail implements UserDetailsService {
         Boolean exist = entrance.existsByUserAccount(username);
         if(!exist) throw new RuntimeException("username does not exist");
         return new implUserDetail(entrance.findByUserAccount(username));
-    }
-}
+
+}}
