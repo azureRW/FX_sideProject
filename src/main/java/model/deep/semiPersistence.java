@@ -1,7 +1,8 @@
 package model.deep;
 
-import mappingObj.catchJsonFather;
+import model.catchJsonFather;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -11,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Controller
+@Component
 public class semiPersistence  {
     private Date date =new Date();
-    private Map<String,String> IDset = new HashMap<>();
+    private Map<String,String> IdAccount = new HashMap<>();
     private SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
     private String WD = sdf.format(date);
     private float bid;
@@ -23,20 +24,13 @@ public class semiPersistence  {
     @Autowired
     private catchJsonFather father;
     @Autowired
-    private model.deep.metaAPI metaAPI;
+    private service.metaAPI metaAPI;
 //    @Autowired
 //    unitTest unit;
     @Autowired
     subServiceOfSemi sub;
 
 
-    public String getUserToken() {
-        return userToken;
-    }
-
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
-    }
 
     private String userToken;
 
@@ -65,18 +59,18 @@ public class semiPersistence  {
     }
 
 public void userTokerSet(String userAccount){
-    this.IDset.put(userAccount,UUID.randomUUID().toString());
-    this.IDset.put(IDset.get(userAccount),userAccount);
+    this.IdAccount.put(userAccount,UUID.randomUUID().toString());
+    this.IdAccount.put(IdAccount.get(userAccount),userAccount);
 }
 public String account2Uuid(String userAccount){
-    return this.IDset.get(userAccount);
+    return this.IdAccount.get(userAccount);
 }
-public Boolean idExist(String userAccount){
-    return  this.IDset.containsKey(userAccount);
-}
+public Boolean idOrAccountIsExist(String s){return  this.IdAccount.containsKey(s);}
 public String uuidToAcount(String uuid){
-    return this.IDset.get(uuid);
+    return this.IdAccount.get(uuid);
 }
+
+
 
 
     public void mainService () throws IOException, InterruptedException {

@@ -1,9 +1,10 @@
-package mappingObj;
+package model;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
-@Controller
+@Component
 public class currentPrice {
     public String equity =null;
     public String symbol = null;

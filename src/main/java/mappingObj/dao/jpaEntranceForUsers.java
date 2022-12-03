@@ -1,6 +1,6 @@
 package mappingObj.dao;
 
-import mappingObj.tradeUser;
+import model.tradeUser;
 import org.springframework.data.repository.CrudRepository;
 
 public interface jpaEntranceForUsers extends CrudRepository<tradeUser,Long> {

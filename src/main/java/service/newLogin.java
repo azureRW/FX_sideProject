@@ -1,14 +1,12 @@
-package security;
+package service;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import mappingObj.tradeUser;
 import model.deep.semiPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import security.implUserDetail;
 
 import java.util.Map;
 import java.util.Objects;
@@ -33,6 +31,6 @@ public class newLogin {
                 .getUser()
                 .getUserAccount();
         semi.userTokerSet(userAccount);
-        return "successes and serverToken is "+ semi.account2Uuid(userAccount);
+        return "successes and Token is "+ semi.account2Uuid(userAccount);
     }
 }

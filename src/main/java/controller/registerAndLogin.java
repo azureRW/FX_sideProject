@@ -1,10 +1,9 @@
 package controller;
 
-import lombok.NoArgsConstructor;
-import model.userBehavior;
+import service.userBehavior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import security.newLogin;
+import service.newLogin;
 
 import java.util.HashMap;
 

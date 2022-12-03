@@ -1,9 +1,8 @@
-package mappingObj.forWebsocket;
+package model.forWebsocket;
 
 import lombok.Data;
-import mappingObj.userRecode;
+import model.userRecode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

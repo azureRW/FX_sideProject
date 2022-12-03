@@ -14,13 +14,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.io.IOException;
 import java.text.ParseException;
 
-@SpringBootApplication(scanBasePackages = {"controller","model","com.fx_sideproject","config","mappingObj","aop","security"},
+@SpringBootApplication(scanBasePackages = {"controller","model","com.fx_sideproject","config","mappingObj","aop","security","service"},
 exclude = { SecurityAutoConfiguration.class })
-@EnableJpaRepositories(basePackages = {"model","controller","com.fx_sideproject","mappingObj"})
+@EnableJpaRepositories(basePackages = {"com.fx_sideproject","mappingObj"})
 @EnableAsync
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@EntityScan(basePackages = {"mappingObj","model","controller"})
+@EntityScan(basePackages = {"model"})
 
 public class FxSideProjectApplication {
 

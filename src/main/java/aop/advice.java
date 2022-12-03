@@ -1,6 +1,6 @@
 package aop;
 
-import mappingObj.forWebsocket.message;
+import model.forWebsocket.message;
 import mappingObj.dao.jpaEntranceForUsers;
 import model.deep.semiPersistence;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +58,7 @@ public class advice {
 //
 //        return re;
 //    }
-    @Pointcut("execution(* model.userBehavior.userX*(..))")
+    @Pointcut("execution(* service.userBehavior.userX*(..))")
     private void pt4() {}
     @Around("pt4()")
     public Object printPropertyForHTTP(ProceedingJoinPoint point) throws Throwable {

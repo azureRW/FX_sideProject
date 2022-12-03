@@ -1,4 +1,4 @@
-package model.deep;
+package service;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,21 +9,23 @@ import java.util.concurrent.ExecutionException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import mappingObj.catchJson;
-import mappingObj.catchJsonFather;
-import mappingObj.currentPrice;
-import mappingObj.serverTime;
+import model.catchJson;
+import model.catchJsonFather;
+import model.currentPrice;
+import model.deep.kickAwayErrorHandler;
+import model.serverTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-@RestController
+@Service
 public class metaAPI {
     private boolean EnvironmentIsSet = false;
     @Value("${pathFOrCandle}")

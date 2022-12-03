@@ -1,18 +1,17 @@
-package mappingObj;
+package model;
 
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "trade_user")
-@Controller
+@Component
 public class tradeUser {
     public tradeUser() {
     }

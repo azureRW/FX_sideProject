@@ -1,21 +1,22 @@
-package model;
+package service;
 
-import mappingObj.forWebsocket.message;
+import model.forWebsocket.message;
 import mappingObj.dao.jpaEntranceForTradeData;
 import mappingObj.dao.jpaEntranceForUsers;
-import mappingObj.tradeUser;
-import mappingObj.userRecode;
 import model.deep.forServerToken;
 import model.deep.semiPersistence;
+import model.tradeUser;
+import model.userRecode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@Service
 public class userBehavior {
     @Autowired
     jpaEntranceForUsers entrance;
@@ -157,7 +158,7 @@ public void userXtest(String Account){
     System.out.println("test");
 }
 
-    public void logout(){
+    public void logout(String id){
             //just have no idea what should i do here
     }
 }

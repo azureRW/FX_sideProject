@@ -1,16 +1,13 @@
 package controller;
 
-import mappingObj.forWebsocket.message;
+import model.forWebsocket.message;
 import model.deep.semiPersistence;
-import model.userBehavior;
+import service.userBehavior;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/userBehavior")

@@ -1,8 +1,6 @@
-package mappingObj;
+package model;
 
 import lombok.Data;
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -32,5 +30,16 @@ public class userRecode {
     }
 
     public userRecode() {
+    }
+
+    public static class candleSet {
+
+        public  float close;
+        public String date;
+        public  float heigh;
+        public  float low;
+        public  float open;
+
+
     }
 }
