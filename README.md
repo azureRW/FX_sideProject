@@ -1,6 +1,9 @@
 # FX_sideProject
 
-*2022-11-29 21:56:28 Tuesday*
+*2022-12-4 11:43*
+
+# 整體架構圖  
+![](https://i.imgur.com/OiKbufV.jpg)  
 
 
 
