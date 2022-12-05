@@ -1,16 +1,19 @@
 package aop;
 
 import model.forWebsocket.message;
-import mappingObj.dao.jpaEntranceForUsers;
+import model.dao.jpaEntranceForUsers;
 import model.deep.semiPersistence;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +61,7 @@ public class advice {
 //
 //        return re;
 //    }
-    @Pointcut("execution(* service.userBehavior.userX*(..))")
+    @Pointcut("execution(* model.service.userBehavior.userX*(..))")
     private void pt4() {}
     @Around("pt4()")
     public Object printPropertyForHTTP(ProceedingJoinPoint point) throws Throwable {
@@ -72,5 +75,14 @@ public class advice {
         template.convertAndSend("/topic/propertyInfo/"+id,new message(Double.toString(property)));
         return re;
     }
+    @Pointcut("execution(String controller.registerAndLogin.login(..))")
+    private void pt5(){}
+    @Around("pt5()")
+    public Object encodeResponseMs(ProceedingJoinPoint point) throws Throwable {
+        Object re = point.proceed();
+        String loginMes = Base64.getEncoder().encodeToString(((String)re).getBytes("utf-8"));
+        return loginMes;
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package service;
+package model.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,24 +9,26 @@ import java.util.concurrent.ExecutionException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import model.catchJson;
-import model.catchJsonFather;
-import model.currentPrice;
+import model.dao.catchJson;
+import model.dao.catchJsonFather;
+import model.dao.currentPrice;
 import model.deep.kickAwayErrorHandler;
-import model.serverTime;
+import model.dao.serverTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Service
 public class metaAPI {
+    private Logger log = LoggerFactory.getLogger(metaAPI.class);
     private boolean EnvironmentIsSet = false;
     @Value("${pathFOrCandle}")
     private String currentCandle;
@@ -82,9 +84,9 @@ public class metaAPI {
                     "https://mt-provisioning-api-v1.agiliumtrade.agiliumtrade.ai/users/current/accounts/"+accountId+"/deploy?executeForAllReplicas=true"
                     ,new HttpEntity<String>(null, headers)
                     , String.class);
-            System.out.println(response.getBody());
+            log.info(response.getBody());
         }
-        else System.out.println("deployAccount does not run cuz account is deployed");
+        else log.info("deployAccount does not run cuz account is deployed");
     }
     // the function will return the status of metaApiServer, true means connect ; false means disconnect
     public boolean AccountStatusTest() throws IOException {
@@ -97,7 +99,7 @@ public class metaAPI {
 //             System.out.println(response.getBody());
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         HashMap<String,String> e = objectMapper.readValue(response.getBody(),HashMap.class);
-        System.out.println("account is "+e.get("connectionStatus"));
+        log.info("account is '{}'",e.get("connectionStatus"));
         this.isdeploy = e.get("connectionStatus").equals("CONNECTED");
         return this.isdeploy;
     }
@@ -111,7 +113,6 @@ public class metaAPI {
         );
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
         catchJson cj =objectMapper.readValue(response.getBody(),catchJson.class);
-//        System.out.println(cj.date);
 
         SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd-HH:mm");
@@ -119,7 +120,7 @@ public class metaAPI {
         sdfInput.setTimeZone(TimeZone.getTimeZone("GMT"));
         sdfOutput.setTimeZone(TimeZone.getTimeZone("GMT"));
         cj.date=sdfOutput.format(sdfInput.parse(cj.date));
-        System.out.println(cj.date);
+        log.info(cj.date);
     }
     public ArrayList<catchJson> getHistoryCandle() throws ParseException, JsonProcessingException {
         Date date = getTime();
@@ -131,7 +132,6 @@ public class metaAPI {
         Date date2 =cal.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-//        System.out.println(date);
         String url ="https://marketdata.tradermade.com/api/v1/timeseries?" +
                 "currency=EURUSD" +
                 "&api_key=EPsEBf-ZxkQW0vClUTMo" +
@@ -166,7 +166,7 @@ public class metaAPI {
         SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         sdfInput.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date date = sdfInput.parse(st.time);
-        System.out.println(date);
+        log.info("'{}'",date);
         return date;
 
     }

@@ -2,7 +2,9 @@ package controller;
 
 import model.forWebsocket.message;
 import model.deep.semiPersistence;
-import service.userBehavior;
+import model.service.userBehavior;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -19,38 +21,57 @@ public class userBehaviorMapping {
     SimpMessagingTemplate template;
     @Autowired
     semiPersistence semi;
+    private Logger log = LoggerFactory.getLogger(userBehaviorMapping.class);
 
     @PostMapping ("/sell")
     public String sell(@RequestHeader(value = "id") String id,@RequestBody Map<String,String> map){
-        System.out.println("sell is called, content= "+map.get("content"));
-         template.convertAndSend("/topic/"+id
+
+        log.info("user '{}' do sell trade",id);
+        if(behavior.checkUserPropertyFroSell(id)) {
+            log.info("trade fail");
+            template.convertAndSend("/topic/" + id
+                , new message("Insufficient margin"));
+            return "Insufficient margin";}
+        else{
+            log.info("trade success");
+            template.convertAndSend("/topic/"+id
                 ,new message(behavior.userXsell(semi.uuidToAcount(id),1)));
-        return "sell success";
+        return "sell success";}
     }
    @PostMapping ("/buy")
+
     public String buy(@RequestHeader(value = "id") String id,@RequestBody Map<String,String> map){
-        System.out.println("buy is called, content="+map.get("content"));
-         template.convertAndSend("/topic/"+id
-                ,new message(behavior.userXbuy(semi.uuidToAcount(id),1)));
-        return "buy success";
+
+       log.info("user '{}' do buy trade",id);
+       if(behavior.checkUserPropertyForBuy(id)){
+           log.info("trade fail");
+            template.convertAndSend("/topic/" + id
+                    , new message("Insufficient margin"));
+            return "Insufficient margin";}
+        else {
+            log.info("trade success");
+            template.convertAndSend("/topic/" + id
+                    , new message(behavior.userXbuy(semi.uuidToAcount(id), 1)));
+            return "buy success";
+        }
     }
     @GetMapping("/test")
     public String test(@RequestHeader(value = "id") String id){
-        System.out.println("=============");
-        System.out.println("do test");
+        log.info("test");
         behavior.userXtest(semi.uuidToAcount(id));
         return "test compelte";
     }
     @GetMapping("/offset")
     public String offset(@RequestHeader(value = "id") String id){
-        System.out.println("===============");
-        System.out.println("do offset");
+        log.info("user '{}' offset",id);
         String res=behavior.userXoffset(semi.uuidToAcount(id));
         template.convertAndSend("/topic/"+id,new message(res));
         return "offset";
     }
     @GetMapping("/history")
     public String history(@RequestHeader(value = "id") String id){
+
+        log.info("user '{}' access trade history",id);
         template.convertAndSend("/topic/"+id,
                 behavior.history(semi.uuidToAcount(id)));
        return "history";
@@ -58,6 +79,7 @@ public class userBehaviorMapping {
     @GetMapping("/logout")
     public String logout(@RequestHeader(value = "id")String id){
         behavior.logout(id);
+        System.out.println(id+" call logout");
         return "logout";
     }
 }

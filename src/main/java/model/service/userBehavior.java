@@ -1,12 +1,12 @@
-package service;
+package model.service;
 
 import model.forWebsocket.message;
-import mappingObj.dao.jpaEntranceForTradeData;
-import mappingObj.dao.jpaEntranceForUsers;
+import model.dao.jpaEntranceForTradeData;
+import model.dao.jpaEntranceForUsers;
 import model.deep.forServerToken;
 import model.deep.semiPersistence;
-import model.tradeUser;
-import model.userRecode;
+import model.dao.tradeUser;
+import model.dao.userRecode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -145,19 +145,32 @@ public String login(String account,String password){
         else return "non deal to offset";
     }
 
-public message history(String userAccount){
-    message res = new message(null);
-    List<userRecode> list = dataEntrance.findByOuterJoin(
-            (entrance.findByUserAccount(userAccount)).getId());
-    res.setExtra(list);
-  return res;
-};
-
-public void userXtest(String Account){
-    System.out.println("test");
-}
+    public message history(String userAccount){
+        message res = new message(null);
+        List<userRecode> list = dataEntrance.findByOuterJoin(
+                (entrance.findByUserAccount(userAccount)).getId());
+        res.setExtra(list);
+        return res;
+    };
+    public Boolean checkUserPropertyForBuy(String id){
+        String userAccount = semi.uuidToAcount(id);
+        float price = semi.getAsk();
+        double Property = entrance.findByUserAccount(userAccount).getUserProperty();
+        if(Property<((price*100000/100)+100)) return true;
+        else return false;
+    }
+    public Boolean checkUserPropertyFroSell(String id){
+        String userAccount = semi.uuidToAcount(id);
+        float price = semi.getBid();
+        double Property = entrance.findByUserAccount(userAccount).getUserProperty();
+        if(Property<((price*100000/100)+100)) return true;
+        else return false;
+    }
+    public void userXtest(String Account){
+        System.out.println("test");
+    }
 
     public void logout(String id){
-   semi.removeByIdOrAccount(id);
+        semi.removeByIdOrAccount(id);
     }
 }

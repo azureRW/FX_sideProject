@@ -1,7 +1,9 @@
 package security;
 
-import mappingObj.dao.jpaEntranceForUsers;
+import model.dao.jpaEntranceForUsers;
 import model.deep.semiPersistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,10 +15,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Optional;
 
 @Component
 public class authenticationFilter extends OncePerRequestFilter {
+    private Logger log = LoggerFactory.getLogger(authenticationFilter.class);
     @Autowired
     semiPersistence semi;
     @Autowired
@@ -24,20 +28,22 @@ public class authenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Optional<String> op = Optional.ofNullable(request.getHeader("id"));
-        System.out.println("filter is run");
         //if id it not in map
         if (!op.isPresent()) {
-            System.out.println("i wish i will be a login or register method");
+
+            log.info("a user login or register");
             filterChain.doFilter(request, response);
             return;
         }
+
+        log.info("user '{}' access broke ",op.get());
+        //if request has header but it is wrong
         if (!semi.idOrAccountIsExist(op.get())) {
             throw new RuntimeException("does not login");
         }
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(entrance.findByUserAccount(semi.uuidToAcount(op.get())),null,null);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
         filterChain.doFilter(request, response);
     }
 }

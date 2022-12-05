@@ -1,6 +1,5 @@
-package mappingObj.dao;
+package model.dao;
 
-import model.userRecode;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.ArrayList;

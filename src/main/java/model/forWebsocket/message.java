@@ -1,7 +1,7 @@
 package model.forWebsocket;
 
 import lombok.Data;
-import model.userRecode;
+import model.dao.userRecode;
 
 import java.util.List;
 

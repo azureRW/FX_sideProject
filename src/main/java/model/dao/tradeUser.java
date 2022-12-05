@@ -1,9 +1,8 @@
-package model;
+package model.dao;
 
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 import java.util.List;

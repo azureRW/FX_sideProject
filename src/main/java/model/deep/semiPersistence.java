@@ -1,9 +1,8 @@
 package model.deep;
 
-import model.catchJsonFather;
+import model.dao.catchJsonFather;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -24,7 +23,7 @@ public class semiPersistence  {
     @Autowired
     private catchJsonFather father;
     @Autowired
-    private service.metaAPI metaAPI;
+    private model.service.metaAPI metaAPI;
 //    @Autowired
 //    unitTest unit;
     @Autowired

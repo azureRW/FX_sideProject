@@ -1,9 +1,7 @@
-package model;
+package model.dao;
 
 
-import model.catchJson;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 @Component
