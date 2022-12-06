@@ -1,22 +1,22 @@
 package com.fx_sideproject;
 
+import config.redisConfig;
 import lombok.Data;
 import model.dao.jpaEntranceForTradeData;
 import model.dao.jpaEntranceForUsers;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-
-@Controller
-@Data
+@SpringJUnitConfig(classes = redisConfig.class)
 public class unitTest {
-    @Autowired
-    jpaEntranceForUsers inf;
-    @Autowired
-    jpaEntranceForTradeData DATA;
+
 //    @Autowired
 //    userBehavior behavior;
-    String test;
+
 
 
     //find user
@@ -98,8 +98,13 @@ public class unitTest {
 //        System.out.println(sdf.format(date));
 //        System.out.println(sdf.format(date1));
 //    }
+    @Autowired
+    RedisTemplate template;
+    @Test
 public  void test(){
-    System.out.println("test");
+        ValueOperations valueOperations = template.opsForValue();
+        valueOperations.set("安安","安安安安");
+        System.out.println(valueOperations.get("安安"));
 }
 
 }

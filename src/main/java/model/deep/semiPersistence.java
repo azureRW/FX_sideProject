@@ -1,6 +1,8 @@
 package model.deep;
 
 import model.dao.catchJsonFather;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +15,18 @@ import java.util.UUID;
 
 @Component
 public class semiPersistence  {
-    private Date date =new Date();
+    private static Date date =new Date();
     private Map<String,String> IdAccount = new HashMap<>();
-    private SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-    private String WD = sdf.format(date);
+    private static SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+    private static String WD = sdf.format(date);
     private float bid;
     private float ask;
     private  Boolean b;
+    private String mode;
+    private Logger log = LoggerFactory.getLogger(semiPersistence.class);
+
+
+
     @Autowired
     private catchJsonFather father;
     @Autowired
@@ -29,14 +36,12 @@ public class semiPersistence  {
     @Autowired
     subServiceOfSemi sub;
 
+    public semiPersistence() {
+        log.info("today is {}, have a nice day",this.WD);
+    }
 
 
-
-
-
-
-
-public void userTokerSet(String userAccount){
+    public void userTokerSet(String userAccount){
     this.IdAccount.put(userAccount,UUID.randomUUID().toString());
     this.IdAccount.put(IdAccount.get(userAccount),userAccount);
 }
@@ -55,18 +60,44 @@ public void removeByIdOrAccount(String s){
 
 
 
+    public void newMainService() throws IOException, InterruptedException {
+//    log.info("today is '{}', have a nice day",this.WD);
+        if(WD.equals("星期六")||WD.equals("星期日")){
+            fakeMode();
+        }
+        else {
+            if (!metaAPI.isdeploy) {
+                metaAPI.deployAccount();
+                Thread.sleep(2500);
+                while (!metaAPI.AccountStatusTest()) {
+                    Thread.sleep(1000);
+                }
+                Thread.sleep(5000);}
+            realMode();
+        }
+    }
+
+    private void realMode() throws IOException, InterruptedException {
+        Map<String, Float> map  = sub.subService01();
+        this.ask=map.get("ask");
+        this.bid=map.get("bid");
+    }
+
+    public void fakeMode() throws InterruptedException {
+    log.info("how can u get into this?");
+    Map<String,Float> map= sub.subService00();
+        this.ask=map.get("ask");
+        this.bid=map.get("bid");
+    }
+
+
+
+
     public void mainService () throws IOException, InterruptedException {
         if(WD.equals("星期六")||WD.equals("星期日")){
             System.out.println("in weekend, we will use fake data");
-            this.bid=1.03221f;
-            this.ask=1.03240f;
-            Map<String,Float> map0=new HashMap<>();
-            map0.put("bid",this.bid);
-            map0.put("ask",this.ask);
-
-
             while(true){
-              Map<String,Float> map = sub.subService00(map0);
+              Map<String,Float> map = sub.subService00();
                 this.bid=map.get("bid");
                 this.ask=map.get("ask");
               Thread.sleep(2500);
@@ -106,6 +137,7 @@ public void removeByIdOrAccount(String s){
         myThread.start();
     }
 
+
 //////////////////Getter&Setter////////
     public float getBid() {
         return bid;
@@ -130,6 +162,10 @@ public void removeByIdOrAccount(String s){
     public void setB(Boolean b) {
         this.b = b;
     }
+    public String getMode() {
+        return mode;
+    }
+
 
 
 }

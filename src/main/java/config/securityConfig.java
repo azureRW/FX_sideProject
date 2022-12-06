@@ -27,14 +27,16 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests().antMatchers("/rAndL/login","/rAndL/register","/websocket/**").anonymous()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and().addFilterBefore(authentication, UsernamePasswordAuthenticationFilter.class)
+                .cors()
+                .and()
+                .headers().frameOptions().sameOrigin();
 
-        http.cors();
-        http.headers().frameOptions().sameOrigin();
-        http.addFilterBefore(authentication, UsernamePasswordAuthenticationFilter.class);
 
 
     }
