@@ -4,17 +4,20 @@ import model.dao.catchJsonFather;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+
+import static java.util.Optional.ofNullable;
 
 @Component
 public class semiPersistence  {
+    @Autowired
+    private RedisTemplate template;
     private static Date date =new Date();
     private Map<String,String> IdAccount = new HashMap<>();
     private static SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
@@ -42,20 +45,40 @@ public class semiPersistence  {
 
 
     public void userTokerSet(String userAccount){
-    this.IdAccount.put(userAccount,UUID.randomUUID().toString());
-    this.IdAccount.put(IdAccount.get(userAccount),userAccount);
+        ValueOperations valueOperations = this.template.opsForValue();
+
+//       this.IdAccount.put(userAccount,UUID.randomUUID().toString());
+        valueOperations.set(userAccount,UUID.randomUUID().toString());
+//       this.value.put(IdAccount.get(userAccount),userAccount);
+        valueOperations.set(valueOperations.get(userAccount),
+                userAccount);
 }
 public String account2Uuid(String userAccount){
-    return this.IdAccount.get(userAccount);
+    ValueOperations valueOperations = this.template.opsForValue();
+//    return this.IdAccount.get(userAccount);
+    return (String) valueOperations.get(userAccount);
 }
-public Boolean idOrAccountIsExist(String s){return  this.IdAccount.containsKey(s);}
+public Boolean idOrAccountIsExist(String s){
+    ValueOperations valueOperations = this.template.opsForValue();
+//        return  this.IdAccount.containsKey(s);
+        Optional<Object> o = ofNullable(valueOperations.get(s));
+        return o.isPresent();
+    }
 public String uuidToAcount(String uuid){
-    return this.IdAccount.get(uuid);
+//    return this.IdAccount.get(uuid);
+    ValueOperations valueOperations = this.template.opsForValue();
+    return (String) valueOperations.get(uuid);
 }
 public void removeByIdOrAccount(String s){
-    String value= this.IdAccount.get(s);
-    this.IdAccount.remove(s);
-    this.IdAccount.remove(value);
+//    String value= this.IdAccount.get(s);
+//    this.IdAccount.remove(s);
+//    this.IdAccount.remove(value);
+    ValueOperations valueOperations = this.template.opsForValue();
+    String value = (String) valueOperations.get(s);
+    this.template.delete(value);
+    this.template.delete(s);
+
+
 }
 
 

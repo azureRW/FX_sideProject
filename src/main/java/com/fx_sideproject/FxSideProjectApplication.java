@@ -1,5 +1,6 @@
 package com.fx_sideproject;
 
+import controller.unitTest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -28,6 +29,8 @@ public class FxSideProjectApplication {
 
     public static void main(String[] args) throws IOException, ParseException, InterruptedException {
         ConfigurableApplicationContext ctx = SpringApplication.run(FxSideProjectApplication.class, args);
+//        unitTest bean = ctx.getBean(unitTest.class);
+//        bean.test();
 
     }
 }

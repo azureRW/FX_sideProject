@@ -1,4 +1,4 @@
-package com.fx_sideproject;
+package controller;
 
 import config.redisConfig;
 import lombok.Data;
@@ -8,10 +8,12 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@SpringJUnitConfig(classes = redisConfig.class)
+import java.util.Optional;
+@Component
 public class unitTest {
 
 //    @Autowired
@@ -104,7 +106,8 @@ public class unitTest {
 public  void test(){
         ValueOperations valueOperations = template.opsForValue();
         valueOperations.set("安安","安安安安");
-        System.out.println(valueOperations.get("安安"));
+        Optional<Object> o =Optional.ofNullable(valueOperations.get("安"));
+        System.out.println(o.isPresent());
 }
 
 }
