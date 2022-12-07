@@ -1,9 +1,9 @@
 # FX_sideProject
 
-*2022-12-6 09:30 PM*
+*2022-12-6 03:39 PM*
 
 # 整體架構圖  
-![](https://i.imgur.com/jBGT6ef.jpg)  
+![](https://i.imgur.com/hRbmeYa.jpg)  
 
 
 
@@ -18,7 +18,7 @@
 - 使用的是mySql資料庫   
 - 資料庫與後端對接的方案是springDataJPA  
    具體上是用了spring預設的hibernate與hikari  
-- 在登入驗證方面使用了redis來存放用戶的token  
+- 在登入驗證方面使用了redis來存放用戶的id  
 
 ### Api相關
 - 使用者以restfulApi 簡單註冊與登入  
