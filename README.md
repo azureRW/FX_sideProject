@@ -21,7 +21,7 @@
 - 在登入驗證方面使用了redis來存放用戶的id  
 
 ### Api相關
-- 使用者以restfulApi 簡單註冊與登入  
+- 使用者以能以Http request簡單註冊與登入  
 - 登入後使用者與後端會建立起websocket以利於交易  
 	webSocket組件與登入器見Static中的newIndex.html  
 
