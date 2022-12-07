@@ -18,6 +18,7 @@
 - 使用的是mySql資料庫   
 - 資料庫與後端對接的方案是springDataJPA  
    具體上是用了spring預設的hibernate與hikari  
+- 在登入驗證方面使用了redis來存放用戶的token  
 
 ### Api相關
 - 使用者以restfulApi 簡單註冊與登入  
@@ -27,7 +28,8 @@
 ### 後端主體
 - 利用springBoot搭建了MVC架構  
 - 專案管理使用了maven  
-- 使用websocket來對外匯資料更新的響應與推送  
+- 使用websocket來對外匯資料更新的定期推送  
+  
 
 
 
