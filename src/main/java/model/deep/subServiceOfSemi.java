@@ -15,7 +15,7 @@ public class subServiceOfSemi {
      public Map<String,Float> subService00() throws InterruptedException {
          Map<String,Float> map = new HashMap<>();
          map.put("bid",bid+=0.005f);
-         map.put("ask",ask=+0.005f);
+         map.put("ask",ask+=0.005f);
                 return map;
     }
     public Map<String, Float> subService01() throws InterruptedException, IOException {

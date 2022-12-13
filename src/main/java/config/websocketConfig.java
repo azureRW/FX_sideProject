@@ -24,8 +24,7 @@ import java.util.logging.Logger;
 @Configuration
 @EnableWebSocketMessageBroker
 public class websocketConfig implements WebSocketMessageBrokerConfigurer {
-    @Autowired
-    private forServerToken semi;
+
 //    @Autowired
 //    private myHandshake hand;
 //    @Autowired

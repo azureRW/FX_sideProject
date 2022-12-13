@@ -59,7 +59,7 @@ public class userBehaviorMapping {
     public String test(@RequestHeader(value = "id") String id){
         log.info("test");
         behavior.userXtest(semi.uuidToAcount(id));
-        return "test compelte";
+        return "test complete";
     }
     @GetMapping("/offset")
     public String offset(@RequestHeader(value = "id") String id){
@@ -79,7 +79,7 @@ public class userBehaviorMapping {
     @GetMapping("/logout")
     public String logout(@RequestHeader(value = "id")String id){
         behavior.logout(id);
-        System.out.println(id+" call logout");
+        log.info(id+" call logout");
         return "logout";
     }
 }

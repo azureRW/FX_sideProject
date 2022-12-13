@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component
+//@Component
 public class forServerToken {
     public String Token = UUID.randomUUID().toString();
 

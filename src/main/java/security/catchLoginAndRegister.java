@@ -15,12 +15,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Optional;
 
 @Component
-public class authenticationFilter extends OncePerRequestFilter {
-    private Logger log = LoggerFactory.getLogger(authenticationFilter.class);
+public class catchLoginAndRegister extends OncePerRequestFilter {
+    private Logger log = LoggerFactory.getLogger(catchLoginAndRegister.class);
     @Autowired
     semiPersistence semi;
     @Autowired
@@ -31,16 +30,27 @@ public class authenticationFilter extends OncePerRequestFilter {
         //if id it not in map
         if (!op.isPresent()) {
 
-            log.info("a user login or register");
+//            log.info("get non header request");
+            log.info("收到無header訊息");
             filterChain.doFilter(request, response);
             return;
         }
 
-        log.info("user '{}' access broke ",op.get());
+//        log.info("user '{}' access broke ",op.get());
+
         //if request has header but it is wrong
         if (!semi.idOrAccountIsExist(op.get())) {
-            throw new RuntimeException("does not login");
+            try {
+
+                throw new RuntimeException("does not login");
+            }catch (Exception e){
+                log.info("非法ID{}嘗試登入",op.get());
+                return;
+            }
+
         }
+
+        log.info("用戶{}通過第一過濾器",op.get());
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(entrance.findByUserAccount(semi.uuidToAcount(op.get())),null,null);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

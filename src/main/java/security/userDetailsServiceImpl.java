@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class userDetail implements UserDetailsService {
+public class userDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     jpaEntranceForUsers entrance;
@@ -16,6 +16,6 @@ public class userDetail implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Boolean exist = entrance.existsByUserAccount(username);
         if(!exist) throw new RuntimeException("username does not exist");
-        return new implUserDetail(entrance.findByUserAccount(username));
+        return new userDetailImpl(entrance.findByUserAccount(username));
 
 }}

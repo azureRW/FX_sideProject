@@ -11,7 +11,7 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class implUserDetail implements UserDetails {
+public class userDetailImpl implements UserDetails {
     private tradeUser user = new tradeUser();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -22,13 +22,15 @@ public class registerAndLogin {
 
     @PostMapping(path = "register")
     public String register(@RequestBody HashMap<String,String> map){
-        log.info("user '{}' register",map.get("account"));
+//        log.info("user '{}' register",map.get("account"));
+        log.info("用戶{}進行註冊",map.get("account"));
     return behavior.register(map.get("account"),map.get("password"));
     }
     @PostMapping(path = "login")
     public  String login(@RequestBody HashMap<String,String> map) throws UnsupportedEncodingException {
 //    return behavior.login(map.get("account"), map.get("password"));
-        log.info("user '{}' login",map.get("account"));
+//        log.info("user '{}' login",map.get("account"));
+        log.info("用戶{}T嘗試登入",map.get("account"));
         return newLogin.login(map);
     }
 

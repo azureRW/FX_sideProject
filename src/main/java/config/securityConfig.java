@@ -4,19 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import security.authenticationFilter;
+import security.catchLoginAndRegister;
 
 @Configuration
 @EnableWebSecurity
 public class securityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    authenticationFilter authentication;
+    catchLoginAndRegister authentication;
     @Override
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -27,10 +26,13 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/rAndL/login","/rAndL/register","/websocket/**").anonymous()
+                .authorizeRequests().antMatchers("/v3/api-docs"
+                                                            ,"/swagger-ui/**"
+                                                            ,"/rAndL/login"
+                                                            ,"/rAndL/register"
+                                                            ,"/websocket/**").anonymous()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(authentication, UsernamePasswordAuthenticationFilter.class)
                 .cors()
@@ -40,5 +42,6 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
+
 
 }

@@ -10,6 +10,7 @@ import model.dao.userRecode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,8 +24,7 @@ public class userBehavior {
     private jpaEntranceForTradeData dataEntrance;
     @Autowired
     private semiPersistence semi;
-    @Autowired
-    private forServerToken token;
+
 
 
     String type;
@@ -39,17 +39,17 @@ public String register(String account, String password){
     }
     else return "failed ! account name has existed !";
 }
-public String login(String account,String password){
-    if(entrance.existsByUserAccount(account)){
-        if(entrance.findByUserAccount(account).getUserPassword().equals(password)) {
-            tradeUser userL = entrance.findByUserAccountAndUserPassword(account,password);
-
-            return "successes and serverToken is "+ token.getToken();
-        }
-        else return "password is wrong";
-    }
-    else return "account does not exist";
-}
+//public String login(String account,String password){
+//    if(entrance.existsByUserAccount(account)){
+//        if(entrance.findByUserAccount(account).getUserPassword().equals(password)) {
+//            tradeUser userL = entrance.findByUserAccountAndUserPassword(account,password);
+//
+//            return "successes and serverToken is "+ token.getToken();
+//        }
+//        else return "password is wrong";
+//    }
+//    else return "account does not exist";
+//}
     public String userXsell(String user,int unit){
 
 //i have to manipulate db here to deduct user's caution and save a trade recode to db
@@ -138,6 +138,8 @@ public String login(String account,String password){
                 }
 
             }
+            DecimalFormat   fnum   =   new DecimalFormat("##0.00");
+            ttg= Double.valueOf(fnum.format(ttg));
             dataEntrance.saveAll(list);
             entrance.save(userL);
             return "offset! total gain is " + ttg;
@@ -167,7 +169,7 @@ public String login(String account,String password){
         else return false;
     }
     public void userXtest(String Account){
-        System.out.println("test");
+
     }
 
     public void logout(String id){
