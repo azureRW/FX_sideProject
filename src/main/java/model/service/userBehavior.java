@@ -3,10 +3,9 @@ package model.service;
 import model.forWebsocket.message;
 import model.dao.jpaEntranceForTradeData;
 import model.dao.jpaEntranceForUsers;
-import model.deep.forServerToken;
 import model.deep.semiPersistence;
-import model.dao.tradeUser;
-import model.dao.userRecode;
+import model.PO.tradeUser;
+import model.PO.userRecode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

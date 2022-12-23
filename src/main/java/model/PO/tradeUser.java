@@ -1,7 +1,8 @@
-package model.dao;
+package model.PO;
 
 
 import lombok.Data;
+import model.PO.userRecode;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;

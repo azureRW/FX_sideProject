@@ -1,5 +1,6 @@
 package model.dao;
 
+import model.PO.tradeUser;
 import org.springframework.data.repository.CrudRepository;
 
 public interface jpaEntranceForUsers extends CrudRepository<tradeUser,Long> {

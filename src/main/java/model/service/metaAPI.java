@@ -9,11 +9,11 @@ import java.util.concurrent.ExecutionException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import model.dao.catchJson;
-import model.dao.catchJsonFather;
-import model.dao.currentPrice;
+import model.DTO.catchJson;
+import model.DTO.catchJsonFather;
+import model.DTO.currentPrice;
 import model.deep.kickAwayErrorHandler;
-import model.dao.serverTime;
+import model.DTO.serverTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

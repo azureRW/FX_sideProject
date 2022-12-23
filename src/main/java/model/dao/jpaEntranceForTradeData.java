@@ -1,5 +1,6 @@
 package model.dao;
 
+import model.PO.userRecode;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.ArrayList;

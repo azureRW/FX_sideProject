@@ -1,4 +1,4 @@
-package model.dao;
+package model.DTO;
 
 
 import com.fasterxml.jackson.annotation.JsonAlias;

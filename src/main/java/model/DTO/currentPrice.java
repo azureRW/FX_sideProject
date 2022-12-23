@@ -1,4 +1,4 @@
-package model.dao;
+package model.DTO;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;

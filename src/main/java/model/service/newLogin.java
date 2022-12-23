@@ -1,7 +1,7 @@
 package model.service;
 
+import model.DTO.catchUser;
 import model.deep.semiPersistence;
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
-import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -23,9 +22,9 @@ public class newLogin {
     @Autowired
     semiPersistence semi;
     private Logger log = LoggerFactory.getLogger(newLogin.class);
-    public String login(Map<String,String> map) throws UnsupportedEncodingException {
-        String encodeAccount = new String(Base64.getDecoder().decode(map.get("account")),"utf-8");
-        String encodePassword = new String(Base64.getDecoder().decode(map.get("password")),"utf-8");
+    public String login(catchUser user) throws UnsupportedEncodingException {
+        String encodeAccount = new String(Base64.getDecoder().decode(user.getAccount()),"utf-8");
+        String encodePassword = new String(Base64.getDecoder().decode(user.getPassword()),"utf-8");
 
 
 

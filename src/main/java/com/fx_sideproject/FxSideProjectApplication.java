@@ -22,7 +22,7 @@ exclude = { SecurityAutoConfiguration.class })
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @EnableScheduling
-@EntityScan(basePackages = {"model.dao"})
+@EntityScan(basePackages = {"model.PO"})
 
 public class FxSideProjectApplication {
 
