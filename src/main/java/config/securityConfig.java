@@ -32,7 +32,8 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                                                             ,"/swagger-ui/**"
                                                             ,"/rAndL/login"
                                                             ,"/rAndL/register"
-                                                            ,"/websocket/**").anonymous()
+                                                            ,"/websocket/**"
+                                                            ,"/fakeTerminal/**").anonymous()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(authentication, UsernamePasswordAuthenticationFilter.class)
                 .cors()

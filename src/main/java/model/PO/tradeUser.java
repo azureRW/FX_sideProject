@@ -6,13 +6,14 @@ import model.PO.userRecode;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "trade_user")
 @Component
-public class tradeUser {
+public class tradeUser implements Serializable {
     public tradeUser() {
     }
 

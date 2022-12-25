@@ -1,5 +1,6 @@
 package controller;
 
+import model.PO.userRecode;
 import model.forWebsocket.message;
 import model.deep.semiPersistence;
 import model.service.userBehavior;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -70,10 +72,9 @@ public class userBehaviorMapping {
     }
     @GetMapping("/history")
     public String history(@RequestHeader(value = "id") String id){
-
+        List<userRecode> list = behavior.history(semi.uuidToAcount(id));
         log.info("user '{}' access trade history",id);
-        template.convertAndSend("/topic/"+id,
-                behavior.history(semi.uuidToAcount(id)));
+        template.convertAndSend("/topic/history/"+id, list);
        return "history";
     }
     @GetMapping("/logout")

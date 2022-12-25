@@ -6,7 +6,11 @@ import model.dao.jpaEntranceForUsers;
 import model.deep.semiPersistence;
 import model.PO.tradeUser;
 import model.PO.userRecode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -23,7 +27,7 @@ public class userBehavior {
     private jpaEntranceForTradeData dataEntrance;
     @Autowired
     private semiPersistence semi;
-
+    Logger log = LoggerFactory.getLogger(userBehavior.class);
 
 
     String type;
@@ -49,7 +53,8 @@ public String register(String account, String password){
 //    }
 //    else return "account does not exist";
 //}
-    public String userXsell(String user,int unit){
+@CacheEvict(cacheNames = "history",allEntries = true)
+public String userXsell(String user,int unit){
 
 //i have to manipulate db here to deduct user's caution and save a trade recode to db
 //ask(賣出價) and bid(買進價) are at the point of financial institution, it means bid will be the price we(user) sell to market and vice versa
@@ -73,6 +78,7 @@ public String register(String account, String password){
         type="sell";
         return "sell trade finish, sell "+unit*100000+" EUROS at "+bidPrice ;
     }
+    @CacheEvict(cacheNames = "history",allEntries = true)
     public String userXbuy(String user,int unit){
         Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
         System.out.println(op.isEmpty());
@@ -96,6 +102,7 @@ public String register(String account, String password){
 //    this.userL.setUserProperty(this.userL.getUserProperty()-0.05);
 //    entrance.save(userL);
 //    }
+    @CacheEvict(cacheNames = "history",allEntries = true)
     public String userXoffset(String user) {
         Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
         tradeUser userL=op.get();
@@ -145,14 +152,12 @@ public String register(String account, String password){
         }
         else return "non deal to offset";
     }
-
-    public message history(String userAccount){
-        message res = new message(null);
-        List<userRecode> list = dataEntrance.findByOuterJoin(
+    @Cacheable(cacheNames = "history",key = "#p0")
+    public List<userRecode> history(String userAccount){
+        log.info("{} access history",userAccount);
+        return dataEntrance.findByOuterJoin(
                 (entrance.findByUserAccount(userAccount)).getId());
-        res.setExtra(list);
-        return res;
-    };
+    }
     public Boolean checkUserPropertyForBuy(String id){
         String userAccount = semi.uuidToAcount(id);
         float price = semi.getAsk();
