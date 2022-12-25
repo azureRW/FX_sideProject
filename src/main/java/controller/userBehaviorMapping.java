@@ -66,14 +66,17 @@ public class userBehaviorMapping {
     @GetMapping("/offset")
     public String offset(@RequestHeader(value = "id") String id){
         log.info("user '{}' offset",id);
-        String res=behavior.userXoffset(semi.uuidToAcount(id));
+        String user = semi.uuidToAcount(id);
+        String res;
+        if(behavior.checkOffset(user)) res=behavior.userXoffset(user);
+        else res="non deal to offset";
         template.convertAndSend("/topic/"+id,new message(res));
         return "offset";
     }
     @GetMapping("/history")
     public String history(@RequestHeader(value = "id") String id){
         List<userRecode> list = behavior.history(semi.uuidToAcount(id));
-        log.info("user '{}' access trade history",id);
+//        log.info("user '{}' access trade history",id);
         template.convertAndSend("/topic/history/"+id, list);
        return "history";
     }

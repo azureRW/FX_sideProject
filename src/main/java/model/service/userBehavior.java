@@ -37,7 +37,8 @@ public String register(String account, String password){
         user.setUserProperty(100000);
         user.setUserPassword(password);
         user.setUserAccount(account);
-        System.out.println("Main KEY is " + entrance.save(user).getId());
+//        System.out.println("Main KEY is " + entrance.save(user).getId());
+        log.info("Main KEY is " + entrance.save(user).getId());
         return "successful";
     }
     else return "failed ! account name has existed !";
@@ -59,7 +60,7 @@ public String userXsell(String user,int unit){
 //i have to manipulate db here to deduct user's caution and save a trade recode to db
 //ask(賣出價) and bid(買進價) are at the point of financial institution, it means bid will be the price we(user) sell to market and vice versa
         Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
-        System.out.println(op.isEmpty());
+//        System.out.println(op.isEmpty());
         if(op.isEmpty()) return "not login";
         tradeUser userL=op.get();
         float bidPrice= this.semi.getBid();
@@ -81,7 +82,7 @@ public String userXsell(String user,int unit){
     @CacheEvict(cacheNames = "history",allEntries = true)
     public String userXbuy(String user,int unit){
         Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
-        System.out.println(op.isEmpty());
+//        System.out.println(op.isEmpty());
         if(op.isEmpty()) return "not login";
         tradeUser userL=op.get();
         float askPrice = semi.getAsk();
@@ -102,12 +103,18 @@ public String userXsell(String user,int unit){
 //    this.userL.setUserProperty(this.userL.getUserProperty()-0.05);
 //    entrance.save(userL);
 //    }
+    public Boolean checkOffset(String user){
+        Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
+        tradeUser userL=op.get();
+        ArrayList<userRecode> list = dataEntrance.findByOuterJoinAndOffsetIsFalse(userL.getId());
+       return (list.size()!=0);
+    }
     @CacheEvict(cacheNames = "history",allEntries = true)
     public String userXoffset(String user) {
         Optional<tradeUser> op = Optional.ofNullable(entrance.findByUserAccount(user));
         tradeUser userL=op.get();
         Double ttg=0d;
-        System.out.println(op.isEmpty());
+//        System.out.println(op.isEmpty());
         if (op.isEmpty()) return "not login";
         ArrayList<userRecode> list = dataEntrance.findByOuterJoinAndOffsetIsFalse(userL.getId());
 //        System.out.println("find");
@@ -115,7 +122,7 @@ public String userXsell(String user,int unit){
 //        for (int i = 0; i < list.size(); i++) {
 //            s = s + list.get(i).get()+"\n";
 //        }
-        if(list.size()!=0) {
+
             for (int i = 0; i < list.size(); i++) {
                 userRecode re = list.get(i);
                 re.setOffset(true);
@@ -149,8 +156,7 @@ public String userXsell(String user,int unit){
             dataEntrance.saveAll(list);
             entrance.save(userL);
             return "offset! total gain is " + ttg;
-        }
-        else return "non deal to offset";
+
     }
     @Cacheable(cacheNames = "history",key = "#p0")
     public List<userRecode> history(String userAccount){
